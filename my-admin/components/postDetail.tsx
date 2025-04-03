@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import "../src/index.css";
-import React from "react";
+// import React from "react";
 
 export default function PostDetail() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function PostDetail() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${import.meta.env.API_URL}/api/posts/${id}`
+        `${import.meta.env.VITE_API_URL}/api/posts/${id}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error, status: ${response.status}`);
@@ -98,7 +98,7 @@ export default function PostDetail() {
   async function handleSave() {
     try {
       const response = await fetch(
-        `${import.meta.env.API_URL}/api/editPost/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/editPost/${id}`,
         {
           method: "PUT",
           headers: {

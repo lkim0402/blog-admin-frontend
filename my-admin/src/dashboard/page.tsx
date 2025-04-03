@@ -18,7 +18,9 @@ export default function Dashboard() {
     const callPost = async () => {
       try {
         // const response = await fetch("http://localhost:5000/api/posts");
-        const response = await fetch(`${import.meta.env.API_URL}/api/posts`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/posts`
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error, status: ${response.status}`);
@@ -42,7 +44,7 @@ export default function Dashboard() {
   async function onDelete(id: string) {
     try {
       const response = await fetch(
-        `${import.meta.env.API_URL}/api/delete/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/delete/${id}`,
         {
           method: "DELETE",
         }

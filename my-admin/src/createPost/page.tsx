@@ -45,19 +45,22 @@ export default function CreatePost() {
   async function handleSubmit() {
     // console.log(editor?.getHTML());
     try {
-      const response = await fetch(`${import.meta.env.API_URL}/api/submit`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: post.title,
-          category: post.category,
-          body: post.body,
-          date: new Date().toISOString(),
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/submit`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: post.title,
+            category: post.category,
+            body: post.body,
+            date: new Date().toISOString(),
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
