@@ -4,8 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import "../src/index.css";
-import React from "react";
-//
+// import React from "react";
 
 export default function PostDetail() {
   const navigate = useNavigate();
