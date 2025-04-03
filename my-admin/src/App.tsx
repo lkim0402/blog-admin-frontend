@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "./dashboard/page";
 import Home from "./home/page";
 import CreatePost from "./createPost/page";
-import PostDetail from "../components/postDetail";
+import PostDetail from "../components/PostDetail";
 
 export default function App() {
   return (
