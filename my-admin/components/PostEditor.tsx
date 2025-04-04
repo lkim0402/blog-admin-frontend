@@ -2,10 +2,13 @@ import Link from "@tiptap/extension-link";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+
 import PostButtonMenu from "./PostButtonMenu";
 import Button from "./button";
 import { all, createLowlight } from "lowlight";
 import React, {
+  useCallback,
   // useEffect,
   useState,
 } from "react";
@@ -36,6 +39,7 @@ export default function PostEditor({
         codeBlock: false,
       }),
       Link,
+      Image,
       CodeBlockLowlight.configure({
         lowlight,
       }),
@@ -52,6 +56,14 @@ export default function PostEditor({
       }));
     },
   });
+
+  const addImage = useCallback(() => {
+    const url = window.prompt("URL");
+
+    if (url) {
+      editor?.chain().focus().setImage({ src: url }).run();
+    }
+  }, [editor]);
 
   if (!editor) {
     return null;
@@ -95,6 +107,7 @@ export default function PostEditor({
           text={showRaw ? "Preview" : "Raw HTML"}
           onClick={() => setShowRaw((prev) => !prev)}
         />
+        <Button text={"Set image"} onClick={addImage}></Button>
 
         {/* <EditorContent editor={editor} /> */}
         {showRaw ? (

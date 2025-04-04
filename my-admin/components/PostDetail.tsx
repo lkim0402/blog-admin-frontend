@@ -153,14 +153,22 @@ export default function PostDetail() {
 
   return (
     <div className="flex flex-col space-y-3 max-w-4xl mx-auto p-4">
-      {!isLoading && !isEditing ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : isEditing ? (
+        <PostEditor
+          post={post}
+          setPost={setPost}
+          onSubmit={handleSave}
+          onPrevious={handleCancel}
+        />
+      ) : (
         <div>
           <div className="flex flex-row gap-2">
             <Button text={"Home"} onClick={onBack} />
             <Button text={"Edit"} onClick={handleEdit} />
           </div>
 
-          {isLoading && <div>Loading...</div>}
           {error && <div className="text-red-500">{error}</div>}
           <div>
             <h1 className="text-1xl font-bold mb-2">Title: {post.title}</h1>
@@ -175,19 +183,11 @@ export default function PostDetail() {
               </p>
             )}
             <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
-            {/* <div dangerouslySetInnerHTML={{ __html: post.body }} /> */}
             {viewEditor && (
               <EditorContent editor={viewEditor} className="prose max-w-none" />
             )}
           </div>
         </div>
-      ) : (
-        <PostEditor
-          post={post}
-          setPost={setPost}
-          onSubmit={handleSave}
-          onPrevious={handleCancel}
-        />
       )}
     </div>
   );
