@@ -1,9 +1,11 @@
 import { Post } from "../src/types/post";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEditor, EditorContent } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
+// import { useEditor, EditorContent } from "@tiptap/react";
+// import { StarterKit } from "@tiptap/starter-kit";
 import "../src/index.css";
+import PostEditor from "./PostEditor";
+import Button from "./button";
 // import React from "react";
 
 export default function PostDetail() {
@@ -45,10 +47,6 @@ export default function PostDetail() {
         date: data.date || new Date(),
         updated_date: data.updated_date || "",
       });
-
-      if (editor) {
-        editor.commands.setContent(data.body);
-      }
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -64,22 +62,6 @@ export default function PostDetail() {
     fetchPost();
   }, [id]);
 
-  const editor = useEditor({
-    content: post?.body || "",
-    extensions: [StarterKit],
-    onUpdate({ editor }) {
-      setPost((prevPost) => ({
-        ...prevPost,
-        body: editor.getHTML(),
-      }));
-    },
-  });
-  useEffect(() => {
-    if (editor && post.body && !editor.isDestroyed) {
-      editor.commands.setContent(post.body);
-    }
-  }, [post.body, editor]);
-
   function onBack() {
     navigate(`/dashboard`);
   }
@@ -90,8 +72,6 @@ export default function PostDetail() {
 
   function handleCancel() {
     setIsEditing(false);
-    // Reset any changes
-    // editor?.commands.setContent(post.body);
     fetchPost();
   }
 
@@ -121,14 +101,10 @@ export default function PostDetail() {
       const updatedPost = await response.json();
       console.log("updatedpost: ", updatedPost);
 
-      // setPost(updatedPost);
       setPost({
         ...updatedPost,
         updated_date: updatedPost.updated_date || new Date().toISOString(),
       });
-      if (editor) {
-        editor.commands.setContent(updatedPost.body);
-      }
 
       setIsEditing(false);
       fetchPost();
@@ -141,30 +117,17 @@ export default function PostDetail() {
     }
   }
 
-  if (!editor) {
-    return null;
-  }
-
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <button
-        className="rounded-lg border-2 border-gray-400 px-4 py-2 mb-4"
-        onClick={onBack}
-      >
-        Back to home
-      </button>
-
-      {isLoading && <div>Loading...</div>}
-      {error && <div className="text-red-500">{error}</div>}
-
-      {!isLoading && !isEditing ? (
+    <div className="flex flex-col space-y-3 max-w-4xl mx-auto p-4">
+      {!isLoading && !isEditing && (
         <div>
-          <button
-            className="rounded-lg border-2 border-gray-400 px-4 py-2 mb-4"
-            onClick={handleEdit}
-          >
-            Edit
-          </button>
+          <div className="flex flex-row gap-2">
+            <Button text={"Home"} onClick={onBack} />
+            <Button text={"Edit"} onClick={handleEdit} />
+          </div>
+
+          {isLoading && <div>Loading...</div>}
+          {error && <div className="text-red-500">{error}</div>}
           <div>
             <h1 className="text-1xl font-bold mb-2">Title: {post.title}</h1>
             <p className="text-sm text-gray-500">Category: {post.category}</p>
@@ -177,61 +140,17 @@ export default function PostDetail() {
                 Last updated: {new Date(post.updated_date).toLocaleDateString()}
               </p>
             )}
-            <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div dangerouslySetInnerHTML={{ __html: post.body }} />
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div className="flex space-x-2 mb-4">
-            <button
-              className="rounded-lg border-2 border-gray-400 px-4 py-2"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-            <button
-              className="rounded-lg border-2 border-gray-400 px-4 py-2"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
-          </div>
-          <div className="flex flex-col space-y-4">
-            <div>
-              <label htmlFor="title" className="block mb-1">
-                Title
-              </label>
-              <input
-                id="title"
-                type="text"
-                onChange={(e) => setPost({ ...post, title: e.target.value })}
-                value={post.title || ""}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <div>
-                <label>Category</label>
-                <select
-                  value={post.category}
-                  onChange={(e) =>
-                    setPost({ ...post, category: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option>Workshop</option>
-                  <option>Journal</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="block mb-1">Content</label>
-              <EditorContent editor={editor} className=" " />
-            </div>
+            {/* <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div dangerouslySetInnerHTML={{ __html: post.body }} /> */}
           </div>
         </div>
       )}
+      <PostEditor
+        post={post}
+        setPost={setPost}
+        onSubmit={handleSave}
+        onPrevious={handleCancel}
+      />
     </div>
   );
 }

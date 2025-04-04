@@ -34,6 +34,7 @@
     "react-syntax-highlighter": "^15.6.1",
     "remark-gfm": "^4.0.1",
     "styled-components": "^6.1.16",
+    "tiptap-markdown": "^0.8.10",
     "turndown": "^7.2.0"
   },
   "devDependencies": {
