@@ -6,13 +6,21 @@ import {
 } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../lib/firebase";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
+  // const auth = getAuth();
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      navigate("/dashboard");
+    }
+  }, [auth.currentUser, navigate]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,7 +30,7 @@ export default function Home() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("welcome ", user);
-        navigate("/dashboard");
+        // navigate("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;

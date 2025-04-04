@@ -12,7 +12,9 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.17",
     "@tiptap/extension-bullet-list": "^2.11.7",
+    "@tiptap/extension-code-block-lowlight": "^2.11.7",
     "@tiptap/extension-heading": "^2.11.7",
+    "@tiptap/extension-link": "^2.11.7",
     "@tiptap/extension-list-item": "^2.11.7",
     "@tiptap/extension-ordered-list": "^2.11.7",
     "@tiptap/react": "^2.11.7",
@@ -21,6 +23,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase": "^11.5.0",
+    "lowlight": "^3.3.0",
+    "lucide-react": "^0.487.0",
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.1",
     "react": "^19.0.0",

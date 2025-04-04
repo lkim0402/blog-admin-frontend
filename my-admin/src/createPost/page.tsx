@@ -4,32 +4,45 @@ import { StarterKit } from "@tiptap/starter-kit";
 
 import "../index.css";
 import Button from "../../components/button";
+import PostButtonMenu from "../../components/PostButtonMenu";
+
 import { useState } from "react";
 import { Post } from "../types/post";
+
+//
+import Link from "@tiptap/extension-link";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { all, createLowlight } from "lowlight";
+
+const lowlight = createLowlight(all);
 
 export default function CreatePost() {
   const navigate = useNavigate();
 
-  // content
-  // const [title, setTitle] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [body, setBody] = useState("");
   const [post, setPost] = useState<Post>({
     _id: "",
     title: "",
     content: "",
     body: "",
-    category: "",
+    category: "Workshop",
     date: new Date().toISOString(),
     updated_date: "",
+    tags: [],
   });
 
   // utilities
   const [error, setError] = useState("");
+  const [showRaw, setShowRaw] = useState(false);
 
   const editor = useEditor({
     content: "",
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Link,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+    ],
     onUpdate({ editor }) {
       setPost((prevPost) => ({
         ...prevPost,
@@ -43,7 +56,6 @@ export default function CreatePost() {
   }
 
   async function handleSubmit() {
-    // console.log(editor?.getHTML());
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/submit`,
@@ -58,6 +70,7 @@ export default function CreatePost() {
             category: post.category,
             body: post.body,
             date: new Date().toISOString(),
+            tags: post.tags,
           }),
         }
       );
@@ -83,12 +96,15 @@ export default function CreatePost() {
   }
 
   return (
-    <>
-      <Button text={"Go back"} onClick={handlePrevious} />
-      <Button text={"Submit"} onClick={handleSubmit} />
+    <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded-lg">
+      <div className="flex flex-row gap-2">
+        <Button text={"Go back"} onClick={handlePrevious} />
+        <Button text={"Submit"} onClick={handleSubmit} />
+      </div>
 
       <div className="flex flex-col space-y-3">
-        {/* The editor */}
+        {/* The menu */}
+
         <div>
           <label id="title">Title</label>
           <input
@@ -100,19 +116,39 @@ export default function CreatePost() {
         </div>
         <div>
           <label>Category</label>
-          <input
-            type="category"
-            onChange={(e) => setPost({ ...post, category: e.target.value })}
+          <select
             value={post.category}
+            onChange={(e) => setPost({ ...post, category: e.target.value })}
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />{" "}
+          >
+            <option>Workshop</option>
+            <option>Journal</option>
+          </select>
         </div>
+        <div></div>
         <div className="">
           <label>Content</label>
-          <EditorContent editor={editor} />
+          <PostButtonMenu editor={editor} />
+          <Button
+            text={showRaw ? "Preview" : "Raw HTML"}
+            onClick={() => setShowRaw((prev) => !prev)}
+          />
+
+          {/* <EditorContent editor={editor} /> */}
+          {showRaw ? (
+            <textarea
+              className="w-full h-64 border border-gray-300 rounded px-3 py-2 font-mono"
+              value={editor.getHTML()}
+              onChange={(e) => {
+                editor.commands.setContent(e.target.value, false);
+              }}
+            />
+          ) : (
+            <EditorContent editor={editor} />
+          )}
         </div>
         {error && <div className="text-red-300">{error}</div>}
       </div>
-    </>
+    </div>
   );
 }

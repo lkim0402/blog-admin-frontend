@@ -17,7 +17,6 @@ export default function Dashboard() {
   useEffect(() => {
     const callPost = async () => {
       try {
-        // const response = await fetch("http://localhost:5000/api/posts");
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/api/posts`
         );
@@ -67,28 +66,47 @@ export default function Dashboard() {
       setIsLoading(false);
     }
   }
+
   return (
-    <div>
-      <p>Welcome to dashboard!</p>
+    <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded-lg">
+      <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
+        Dashboard
+      </h1>
 
-      <div>
-        <Button text={"Create Post"} onClick={handleCreate} />
+      <div className="flex justify-between items-center mb-6">
+        <p className="text-gray-600">Welcome back! Manage your posts below.</p>
+        <Button text="Create Post" onClick={handleCreate} />
       </div>
-      {/* list of posts */}
-      {isLoading && <div className="italic text-gray-500">Loading</div>}
-      {error && <div className="italic text-red-300">{error}</div>}
-      <div className="mt-10 spa">
-        <p>All posts</p>
-        {posts.length === 0 && !isLoading && !error && (
-          <p className="italic text-gray-500">No posts available.</p>
-        )}
 
-        <div className="flex flex-col space-y-3">
-          {posts.map((el) => (
-            <PostBox {...el} key={el._id} onDelete={onDelete} />
-          ))}
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-100 text-red-600 p-3 rounded-md mb-4">
+          {error}
         </div>
-      </div>
+      )}
+
+      {/* Loading State */}
+      {isLoading ? (
+        <div className="italic text-gray-500 text-center">Loading...</div>
+      ) : (
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            All Posts
+          </h2>
+
+          {posts.length === 0 ? (
+            <p className="italic text-gray-500 text-center">
+              No posts available.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 gap-4">
+              {posts.map((el) => (
+                <PostBox {...el} key={el._id} onDelete={onDelete} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

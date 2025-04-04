@@ -30,7 +30,7 @@ export default function PostBox({
 
   return (
     <div
-      className="border-2 mx-5
+      className="border-2 
      justify-between border-gray-500 rounded flex flex-row "
     >
       <div>

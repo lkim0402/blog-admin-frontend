@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import "../src/index.css";
-// import React from "react";
+import React from "react";
 
 export default function PostDetail() {
   const navigate = useNavigate();
@@ -166,11 +166,9 @@ export default function PostDetail() {
             Edit
           </button>
           <div>
-            <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-            <p className="text-lg text-gray-600 mb-2">
-              Category: {post.category}
-            </p>
-            <p className="text-sm text-gray-500 mb-4">Post ID: {id}</p>
+            <h1 className="text-1xl font-bold mb-2">Title: {post.title}</h1>
+            <p className="text-sm text-gray-500">Category: {post.category}</p>
+            <p className="text-sm text-gray-500">Post ID: {id}</p>
             <p className="text-sm text-gray-500">
               Created: {new Date(post.date).toLocaleDateString()}
             </p>
@@ -213,16 +211,19 @@ export default function PostDetail() {
               />
             </div>
             <div>
-              <label htmlFor="category" className="block mb-1">
-                Category
-              </label>
-              <input
-                id="category"
-                type="text"
-                onChange={(e) => setPost({ ...post, category: e.target.value })}
-                value={post.category || ""}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div>
+                <label>Category</label>
+                <select
+                  value={post.category}
+                  onChange={(e) =>
+                    setPost({ ...post, category: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option>Workshop</option>
+                  <option>Journal</option>
+                </select>
+              </div>
             </div>
             <div>
               <label className="block mb-1">Content</label>

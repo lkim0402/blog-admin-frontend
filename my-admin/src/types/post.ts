@@ -6,4 +6,5 @@ export interface Post {
   category: string;
   date: string;
   updated_date?: string;
+  tags?: string[];
 }
