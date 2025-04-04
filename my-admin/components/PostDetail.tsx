@@ -3,10 +3,19 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { useEditor, EditorContent } from "@tiptap/react";
 // import { StarterKit } from "@tiptap/starter-kit";
+import Link from "@tiptap/extension-link";
+
 import "../src/index.css";
 import PostEditor from "./PostEditor";
 import Button from "./button";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { all, createLowlight } from "lowlight";
+
 // import React from "react";
+
+const lowlight = createLowlight(all);
 
 export default function PostDetail() {
   const navigate = useNavigate();
@@ -25,6 +34,25 @@ export default function PostDetail() {
 
   // Getting the id
   const { id } = useParams();
+
+  const viewEditor = useEditor({
+    content: post.body || "",
+    extensions: [
+      StarterKit.configure({
+        codeBlock: false,
+      }),
+      Link,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+    ],
+    editorProps: {
+      attributes: {
+        class: "tiptap-view-mode",
+      },
+    },
+    editable: false,
+  });
 
   const fetchPost = async () => {
     try {
@@ -61,6 +89,12 @@ export default function PostDetail() {
   useEffect(() => {
     fetchPost();
   }, [id]);
+
+  useEffect(() => {
+    if (viewEditor && post.body) {
+      viewEditor.commands.setContent(post.body);
+    }
+  }, [post.body, viewEditor]);
 
   function onBack() {
     navigate(`/dashboard`);
@@ -119,7 +153,7 @@ export default function PostDetail() {
 
   return (
     <div className="flex flex-col space-y-3 max-w-4xl mx-auto p-4">
-      {!isLoading && !isEditing && (
+      {!isLoading && !isEditing ? (
         <div>
           <div className="flex flex-row gap-2">
             <Button text={"Home"} onClick={onBack} />
@@ -140,17 +174,21 @@ export default function PostDetail() {
                 Last updated: {new Date(post.updated_date).toLocaleDateString()}
               </p>
             )}
-            {/* <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div dangerouslySetInnerHTML={{ __html: post.body }} /> */}
+            <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
+            {/* <div dangerouslySetInnerHTML={{ __html: post.body }} /> */}
+            {viewEditor && (
+              <EditorContent editor={viewEditor} className="prose max-w-none" />
+            )}
           </div>
         </div>
+      ) : (
+        <PostEditor
+          post={post}
+          setPost={setPost}
+          onSubmit={handleSave}
+          onPrevious={handleCancel}
+        />
       )}
-      <PostEditor
-        post={post}
-        setPost={setPost}
-        onSubmit={handleSave}
-        onPrevious={handleCancel}
-      />
     </div>
   );
 }
