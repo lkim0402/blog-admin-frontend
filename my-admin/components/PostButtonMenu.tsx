@@ -10,6 +10,8 @@ import {
   Quote,
   Code2,
   Minus,
+  Link,
+  Unlink,
 } from "lucide-react";
 import { useCallback } from "react";
 
@@ -140,13 +142,13 @@ export default function PostButtonMenu({ editor }: PostButtonMenuProps) {
         onClick={setLink}
         className={editor.isActive("link") ? "is-active" : ""}
       >
-        Set link
+        <Link size={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().unsetLink().run()}
         disabled={!editor.isActive("link")}
       >
-        Unset link
+        <Unlink size={16} />
       </button>
     </div>
   );
