@@ -43,6 +43,12 @@ export default function CreatePost() {
         lowlight,
       }),
     ],
+    editorProps: {
+      attributes: {
+        class: "h-80",
+      },
+    },
+
     onUpdate({ editor }) {
       setPost((prevPost) => ({
         ...prevPost,
@@ -137,7 +143,7 @@ export default function CreatePost() {
           {/* <EditorContent editor={editor} /> */}
           {showRaw ? (
             <textarea
-              className="w-full h-64 border border-gray-300 rounded px-3 py-2 font-mono"
+              className="w-full h-80 border border-gray-300 rounded px-3 py-2 font-mono"
               value={editor.getHTML()}
               onChange={(e) => {
                 editor.commands.setContent(e.target.value, false);

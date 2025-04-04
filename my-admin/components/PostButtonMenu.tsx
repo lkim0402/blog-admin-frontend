@@ -133,6 +133,7 @@ export default function PostButtonMenu({ editor }: PostButtonMenuProps) {
       <button
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
         className={iconButtonStyle(false)}
+        title="Insert horizontal rule"
       >
         <Minus size={16} />
       </button>
@@ -140,13 +141,15 @@ export default function PostButtonMenu({ editor }: PostButtonMenuProps) {
       {/* link */}
       <button
         onClick={setLink}
-        className={editor.isActive("link") ? "is-active" : ""}
+        className={iconButtonStyle(editor.isActive("link"))}
+        title="Add link"
       >
         <Link size={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().unsetLink().run()}
         disabled={!editor.isActive("link")}
+        title="Remove link"
       >
         <Unlink size={16} />
       </button>
