@@ -3,17 +3,26 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import ImageResize from "tiptap-extension-resize-image";
 
 import PostButtonMenu from "./PostButtonMenu";
 import Button from "./button";
 import { all, createLowlight } from "lowlight";
-import React, {
-  useCallback,
-  // useEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Post } from "../src/types/post";
 const lowlight = createLowlight(all);
+
+// Cloudinary widget type definition
+declare global {
+  interface Window {
+    cloudinary: {
+      createUploadWidget: (
+        options: object,
+        callback: (error: Error | null, result: CloudinaryUploadResult) => void
+      ) => CloudinaryWidget;
+    }; // Define a more specific type for the Cloudinary object
+  }
+}
 
 type PostEditorProps = {
   post: Post; // initial Post
@@ -23,6 +32,17 @@ type PostEditorProps = {
   onPrevious: () => void;
 };
 
+interface CloudinaryUploadResult {
+  event: string;
+  info: {
+    secure_url: string;
+  };
+}
+
+interface CloudinaryWidget {
+  open: () => void;
+}
+
 export default function PostEditor({
   post,
   setPost,
@@ -30,7 +50,7 @@ export default function PostEditor({
   onPrevious,
 }: PostEditorProps) {
   const [showRaw, setShowRaw] = useState(false);
-  // const [isEditing, setIsEditing] = useState(true);
+  const cloudinaryWidgetRef = useRef<CloudinaryWidget | null>(null);
 
   const editor = useEditor({
     content: post.body || "",
@@ -38,15 +58,21 @@ export default function PostEditor({
       StarterKit.configure({
         codeBlock: false,
       }),
-      Link,
-      Image,
+      Link.configure({
+        openOnClick: true, // Make links clickable
+      }),
+      Image.configure({
+        inline: true,
+        allowBase64: true,
+      }),
+      ImageResize,
       CodeBlockLowlight.configure({
         lowlight,
       }),
     ],
     editorProps: {
       attributes: {
-        class: "h-80",
+        class: "h-auto",
       },
     },
     onUpdate({ editor }) {
@@ -57,11 +83,63 @@ export default function PostEditor({
     },
   });
 
-  const addImage = useCallback(() => {
-    const url = window.prompt("URL");
+  // Simple image insertion via URL prompt
+  const addImageByUrl = useCallback(() => {
+    const url = window.prompt("Enter image URL");
 
-    if (url) {
-      editor?.chain().focus().setImage({ src: url }).run();
+    if (url && editor) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  }, [editor]);
+
+  // Initialize Cloudinary widget
+  useEffect(() => {
+    // Load Cloudinary script if not already loaded
+    if (!document.getElementById("cloudinary-widget-script")) {
+      const script = document.createElement("script");
+      script.id = "cloudinary-widget-script";
+      script.src = "https://widget.cloudinary.com/v2.0/global/all.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      // Cleanup if needed
+      if (cloudinaryWidgetRef.current) {
+        cloudinaryWidgetRef.current = null;
+      }
+    };
+  }, []);
+
+  // Function to open the Cloudinary upload widget
+  const openCloudinaryWidget = useCallback(() => {
+    if (typeof window !== "undefined" && window.cloudinary) {
+      // Initialize the widget if it doesn't exist
+      if (!cloudinaryWidgetRef.current) {
+        cloudinaryWidgetRef.current = window.cloudinary.createUploadWidget(
+          {
+            cloudName: "dwa6lkvcr", // Replace with your Cloudinary cloud name
+            uploadPreset: "cloudinary-preset", // Replace with your upload preset
+            multiple: false,
+            resourceType: "image",
+          },
+          (error: Error | null, result: CloudinaryUploadResult) => {
+            if (!error && result && result.event === "success" && editor) {
+              // Insert the uploaded image into the editor
+              const imageUrl = result.info.secure_url;
+              editor.chain().focus().setImage({ src: imageUrl }).run();
+            }
+          }
+        );
+      }
+
+      // Open the widget
+      if (cloudinaryWidgetRef.current) {
+        cloudinaryWidgetRef.current.open();
+      }
+    } else {
+      console.error("Cloudinary widget script not loaded yet");
+      alert("Image upload is not ready yet. Please try again in a moment.");
     }
   }, [editor]);
 
@@ -103,13 +181,18 @@ export default function PostEditor({
       <div className="">
         <label>Content</label>
         <PostButtonMenu editor={editor} />
-        <Button
-          text={showRaw ? "Preview" : "Raw HTML"}
-          onClick={() => setShowRaw((prev) => !prev)}
-        />
-        <Button text={"Set image"} onClick={addImage}></Button>
+        <div className="flex flex-row gap-2 mb-2">
+          <Button
+            text={showRaw ? "Preview" : "Raw HTML"}
+            onClick={() => setShowRaw((prev) => !prev)}
+          />
 
-        {/* <EditorContent editor={editor} /> */}
+          {/* Image buttons */}
+          <Button text={"Upload Image"} onClick={openCloudinaryWidget} />
+          <Button text={"Image from URL"} onClick={addImageByUrl} />
+        </div>
+
+        {/* Editor Content */}
         {showRaw ? (
           <textarea
             className="w-full h- border border-gray-300 rounded px-3 py-2 font-mono"

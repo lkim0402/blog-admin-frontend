@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // import { useEditor, EditorContent } from "@tiptap/react";
 // import { StarterKit } from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import ImageResize from "tiptap-extension-resize-image";
 
 import "../src/index.css";
 import PostEditor from "./PostEditor";
@@ -12,6 +13,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
+import Image from "@tiptap/extension-image";
 
 // import React from "react";
 
@@ -42,13 +44,19 @@ export default function PostDetail() {
         codeBlock: false,
       }),
       Link,
+      ImageResize,
+
+      Image.configure({
+        inline: true,
+        allowBase64: true, // Allow base64 images if needed
+      }),
       CodeBlockLowlight.configure({
         lowlight,
       }),
     ],
     editorProps: {
       attributes: {
-        class: "tiptap-view-mode",
+        class: "tiptap-view-mode h-auto",
       },
     },
     editable: false,
@@ -184,7 +192,7 @@ export default function PostDetail() {
             )}
             <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
             {viewEditor && (
-              <EditorContent editor={viewEditor} className="prose max-w-none" />
+              <EditorContent editor={viewEditor} className="prose " />
             )}
           </div>
         </div>
