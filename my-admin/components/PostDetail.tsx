@@ -45,10 +45,9 @@ export default function PostDetail() {
       }),
       Link,
       ImageResize,
-
       Image.configure({
         inline: true,
-        allowBase64: true, // Allow base64 images if needed
+        allowBase64: true,
       }),
       CodeBlockLowlight.configure({
         lowlight,
@@ -172,7 +171,7 @@ export default function PostDetail() {
         />
       ) : (
         <div>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 mb-3">
             <Button text={"Home"} onClick={onBack} />
             <Button text={"Edit"} onClick={handleEdit} />
           </div>

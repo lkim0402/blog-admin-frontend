@@ -64,7 +64,7 @@ export default function CreatePost() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col space-y-3 max-w-4xl mx-auto p-4">
       <PostEditor
         post={post}
         setPost={setPost}

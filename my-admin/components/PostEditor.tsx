@@ -20,7 +20,7 @@ declare global {
         options: object,
         callback: (error: Error | null, result: CloudinaryUploadResult) => void
       ) => CloudinaryWidget;
-    }; // Define a more specific type for the Cloudinary object
+    };
   }
 }
 
@@ -149,7 +149,7 @@ export default function PostEditor({
 
   return (
     <div>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 mb-3">
         {/* submitting the new/edited content */}
         <Button text={"Submit"} onClick={onSubmit} />
         {/* going back to home without saving*/}
@@ -157,54 +157,67 @@ export default function PostEditor({
       </div>
 
       {/* The menu */}
-      <div className="">
-        <label id="title">Title</label>
-        <input
-          type="text"
-          onChange={(e) => setPost({ ...post, title: e.target.value })}
-          value={post.title ?? ""}
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div>
-        <label>Category</label>
-        <select
-          value={post.category ?? ""}
-          onChange={(e) => setPost({ ...post, category: e.target.value })}
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option>Workshop</option>
-          <option>Journal</option>
-        </select>
-      </div>
-      <div></div>
-      <div className="">
-        <label>Content</label>
-        <PostButtonMenu editor={editor} />
-        <div className="flex flex-row gap-2 mb-2">
-          <Button
-            text={showRaw ? "Preview" : "Raw HTML"}
-            onClick={() => setShowRaw((prev) => !prev)}
+      <section className="flex flex-col space-y-5">
+        <section className="flex flex-col gap-2 ">
+          <label id="title">Title</label>
+          <input
+            type="text"
+            onChange={(e) => setPost({ ...post, title: e.target.value })}
+            value={post.title ?? ""}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-
-          {/* Image buttons */}
-          <Button text={"Upload Image"} onClick={openCloudinaryWidget} />
-          <Button text={"Image from URL"} onClick={addImageByUrl} />
-        </div>
+        </section>
+        <section className="flex flex-col gap-2">
+          <label>Category</label>
+          <select
+            value={post.category ?? ""}
+            onChange={(e) => setPost({ ...post, category: e.target.value })}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option>Workshop</option>
+            <option>Journal</option>
+          </select>
+        </section>
+        <section>
+          <div>
+            <PostButtonMenu editor={editor} />
+          </div>
+          <div className="flex flex-row gap-2">
+            <Button
+              text={showRaw ? "Preview" : "Raw HTML"}
+              onClick={() => setShowRaw((prev) => !prev)}
+              className=" text-sm"
+            />
+            <Button
+              text={"Upload Image"}
+              onClick={openCloudinaryWidget}
+              className=" text-sm"
+            />
+            <Button
+              text={"Image from URL"}
+              onClick={addImageByUrl}
+              className=" text-sm"
+            />
+          </div>
+        </section>
 
         {/* Editor Content */}
-        {showRaw ? (
-          <textarea
-            className="w-full h- border border-gray-300 rounded px-3 py-2 font-mono"
-            value={editor.getHTML()}
-            onChange={(e) => {
-              editor.commands.setContent(e.target.value, false);
-            }}
-          />
-        ) : (
-          <EditorContent editor={editor} />
-        )}
-      </div>
+        <section className="flex flex-col gap-2">
+          <label>Content</label>
+
+          {showRaw ? (
+            <textarea
+              className="w-full border border-gray-300 rounded px-3 py-2 font-mono"
+              value={editor.getHTML()}
+              onChange={(e) => {
+                editor.commands.setContent(e.target.value, false);
+              }}
+            />
+          ) : (
+            <EditorContent editor={editor} />
+          )}
+        </section>
+      </section>
     </div>
   );
 }
