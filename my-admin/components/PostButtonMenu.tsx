@@ -11,8 +11,11 @@ import {
   Code2,
   Minus,
   Link,
+  AlignLeft,
+  AlignJustify,
+  AlignCenter,
+  AlignRight,
 } from "lucide-react";
-// import React from "react";
 import { useCallback } from "react";
 
 type PostButtonMenuProps = {
@@ -61,7 +64,7 @@ export default function PostButtonMenu({ editor }: PostButtonMenuProps) {
   if (!editor) return null;
 
   return (
-    <div className="flex flex-wrap gap-2 mb-4">
+    <div className="flex flex-wrap gap-0.5 mb-4">
       {/* bold */}
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -120,7 +123,30 @@ export default function PostButtonMenu({ editor }: PostButtonMenuProps) {
       >
         <ListOrdered size={16} />
       </button>
-
+      <button
+        onClick={() => editor.chain().focus().setTextAlign("left").run()}
+        className={iconButtonStyle(editor.isActive({ textAlign: "left" }))}
+      >
+        <AlignLeft size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().setTextAlign("center").run()}
+        className={iconButtonStyle(editor.isActive({ textAlign: "center" }))}
+      >
+        <AlignCenter size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().setTextAlign("right").run()}
+        className={iconButtonStyle(editor.isActive({ textAlign: "right" }))}
+      >
+        <AlignRight size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+        className={iconButtonStyle(editor.isActive({ textAlign: "justify" }))}
+      >
+        <AlignJustify size={16} />
+      </button>
       {/* quote */}
       <button
         onClick={() => editor.chain().focus().toggleBlockquote().run()}

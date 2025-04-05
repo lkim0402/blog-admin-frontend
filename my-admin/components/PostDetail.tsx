@@ -1,8 +1,6 @@
 import { Post } from "../src/types/post";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useEditor, EditorContent } from "@tiptap/react";
-// import { StarterKit } from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import ImageResize from "tiptap-extension-resize-image";
 
@@ -14,9 +12,7 @@ import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
 import Image from "@tiptap/extension-image";
-// import React from "react";
-
-// import React from "react";
+import TextAlign from "@tiptap/extension-text-align";
 
 const lowlight = createLowlight(all);
 
@@ -46,6 +42,9 @@ export default function PostDetail() {
       }),
       Link,
       ImageResize,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       Image.configure({
         inline: true,
         allowBase64: true,
@@ -179,17 +178,6 @@ export default function PostDetail() {
 
           {error && <div className="text-red-500">{error}</div>}
           <div>
-            {/* <h1 className="text-1xl font-bold mb-2">{post.title}</h1>
-            <p className="text-sm text-gray-500">{post.category}</p>
-            <p className="text-sm text-gray-500">Post ID {id}</p>
-            <p className="text-sm text-gray-500">
-              Created: {new Date(post.date).toLocaleDateString()}
-            </p>
-            {post.updated_date && (
-              <p className="text-sm text-gray-500">
-                Last updated: {new Date(post.updated_date).toLocaleDateString()}
-              </p>
-            )} */}
             <div className="mb-8 space-y-2">
               <h1 className="text-3xl font-bold ">{post.title}</h1>
 
@@ -271,7 +259,7 @@ export default function PostDetail() {
                 )}
               </div>
             </div>
-            <hr className="h-px my-5 bg-gray-200 border-0 bg-gray-300" />
+            <hr className="h-px my-5 bg-gray-200 border-0" />
             {viewEditor && (
               <EditorContent editor={viewEditor} className="prose " />
             )}

@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
+import TextAlign from "@tiptap/extension-text-align";
 
 import PostButtonMenu from "./PostButtonMenu";
 import Button from "./button";
@@ -66,6 +67,9 @@ export default function PostEditor({
         allowBase64: true,
       }),
       ImageResize,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       CodeBlockLowlight.configure({
         lowlight,
       }),
@@ -157,7 +161,7 @@ export default function PostEditor({
       </div>
 
       {/* The menu */}
-      <section className="flex flex-col space-y-5">
+      <section className="flex flex-col space-y-2">
         <section className="flex flex-col gap-2 ">
           <label id="title"></label>
           <input
@@ -168,43 +172,47 @@ export default function PostEditor({
             className="w-full px-3 py-2 text-2xl"
           />
         </section>
+        {/* <label>Category</label> */}
         <section className="flex flex-col gap-2">
-          <label>Category</label>
           <select
             value={post.category ?? ""}
             onChange={(e) => setPost({ ...post, category: e.target.value })}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-50 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option>Workshop</option>
             <option>Journal</option>
           </select>
         </section>
-        <section>
+        {/* menu buttons */}
+        <section className="flex flex-wrap ">
           <div>
             <PostButtonMenu editor={editor} />
           </div>
-          <div className="flex flex-row gap-2">
-            <Button
-              text={showRaw ? "Preview" : "Raw HTML"}
+          <div className="flex flex-row items-center mb-3 mx-0.5 text-xs gap-0.5">
+            <button
               onClick={() => setShowRaw((prev) => !prev)}
-              className=" text-sm"
-            />
-            <Button
-              text={"Upload Image"}
+              className="px-2 py-1 border  whitespace-nowrap items-center border-gray-300 rounded-md hover:bg-gray-100 transition"
+            >
+              {showRaw ? "Preview" : "Raw HTML"}
+            </button>
+            <button
               onClick={openCloudinaryWidget}
-              className=" text-sm"
-            />
-            <Button
-              text={"Image from URL"}
+              className="px-2 py-1 border  whitespace-nowrap items-center border-gray-300 rounded-md hover:bg-gray-100 transition"
+            >
+              Upload Image
+            </button>
+            <button
               onClick={addImageByUrl}
-              className=" text-sm"
-            />
+              className="px-2 py-1 border whitespace-nowrap items-center border-gray-300 rounded-md hover:bg-gray-100 transition"
+            >
+              Image from URL
+            </button>
           </div>
         </section>
 
         {/* Editor Content! */}
         <section className="flex flex-col gap-2">
-          <label>Content</label>
+          {/* <label>Content</label> */}
 
           {showRaw ? (
             <textarea

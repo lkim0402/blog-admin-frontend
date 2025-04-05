@@ -31,21 +31,31 @@ export default function PostBox({
   return (
     <div
       className="border-2 
-     justify-between border-gray-500 rounded flex flex-row "
+     justify-between border-gray-500 rounded flex flex-row p-4"
     >
-      <div>
-        <p className="mr-20">Title: {title}</p>
-        <p className="text-gray-500">Category: {category}</p>
+      {/* description */}
+      <section>
+        <p className="mr-20">{title}</p>
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-medium  ${
+            category == "Journal"
+              ? "bg-blue-900 text-blue-200"
+              : "bg-amber-500 text-amber-50"
+          } `}
+        >
+          {category}
+        </span>
         <p className="text-gray-500">
-          date: {new Date(date).toLocaleDateString()}
+          Date: {new Date(date).toLocaleDateString()}
         </p>
         {updated_date && (
           <p className="text-gray-500">
-            updated_date: {new Date(updated_date).toLocaleDateString()}
+            Updated date: {new Date(updated_date).toLocaleDateString()}
           </p>
         )}
-      </div>
-      <div>
+      </section>
+      {/* buttons */}
+      <section>
         <button
           className="rounded-lg bg-gray-100 w-[4rem] m-1 border-0"
           onClick={onExpand}
@@ -58,7 +68,7 @@ export default function PostBox({
         >
           Delete
         </button>
-      </div>
+      </section>
     </div>
   );
 }
