@@ -14,6 +14,7 @@ import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
 import Image from "@tiptap/extension-image";
+import React from "react";
 
 // import React from "react";
 

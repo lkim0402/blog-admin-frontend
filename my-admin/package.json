@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cloudinary/react": "^1.14.1",
     "@cloudinary/url-gen": "^1.21.0",
     "@tailwindcss/vite": "^4.0.17",
     "@tiptap/extension-bullet-list": "^2.11.7",
@@ -22,7 +21,6 @@
     "@tiptap/extension-ordered-list": "^2.11.7",
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
-    "cloudinary-react": "^1.8.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
