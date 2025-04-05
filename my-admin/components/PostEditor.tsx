@@ -72,7 +72,7 @@ export default function PostEditor({
     ],
     editorProps: {
       attributes: {
-        class: "h-auto",
+        class: "h-[400px] overflow-y-auto",
       },
     },
     onUpdate({ editor }) {
@@ -159,12 +159,13 @@ export default function PostEditor({
       {/* The menu */}
       <section className="flex flex-col space-y-5">
         <section className="flex flex-col gap-2 ">
-          <label id="title">Title</label>
+          <label id="title"></label>
           <input
             type="text"
             onChange={(e) => setPost({ ...post, title: e.target.value })}
             value={post.title ?? ""}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Title"
+            className="w-full px-3 py-2 text-2xl"
           />
         </section>
         <section className="flex flex-col gap-2">

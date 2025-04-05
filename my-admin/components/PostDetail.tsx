@@ -179,9 +179,9 @@ export default function PostDetail() {
 
           {error && <div className="text-red-500">{error}</div>}
           <div>
-            <h1 className="text-1xl font-bold mb-2">Title: {post.title}</h1>
-            <p className="text-sm text-gray-500">Category: {post.category}</p>
-            <p className="text-sm text-gray-500">Post ID: {id}</p>
+            {/* <h1 className="text-1xl font-bold mb-2">{post.title}</h1>
+            <p className="text-sm text-gray-500">{post.category}</p>
+            <p className="text-sm text-gray-500">Post ID {id}</p>
             <p className="text-sm text-gray-500">
               Created: {new Date(post.date).toLocaleDateString()}
             </p>
@@ -189,8 +189,89 @@ export default function PostDetail() {
               <p className="text-sm text-gray-500">
                 Last updated: {new Date(post.updated_date).toLocaleDateString()}
               </p>
-            )}
-            <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
+            )} */}
+            <div className="mb-8 space-y-2">
+              <h1 className="text-3xl font-bold ">{post.title}</h1>
+
+              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                {/* Category with badge style */}
+                <span
+                  className={`px-2 py-1  ${
+                    post.category == "Journal"
+                      ? "bg-blue-900 text-blue-200"
+                      : "bg-amber-500 text-amber-50"
+                  } rounded-full text-xs font-medium `}
+                >
+                  {post.category}
+                </span>
+
+                {/* ID */}
+                <span className="flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                    />
+                  </svg>
+                  Post #{id}
+                </span>
+
+                {/* Created date */}
+                <span className="flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {new Date(post.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+
+                {/* Updated date (if exists) */}
+                {post.updated_date && (
+                  <span className="flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                    Updated:{" "}
+                    {new Date(post.updated_date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                )}
+              </div>
+            </div>
+            <hr className="h-px my-5 bg-gray-200 border-0 bg-gray-300" />
             {viewEditor && (
               <EditorContent editor={viewEditor} className="prose " />
             )}
