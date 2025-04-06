@@ -76,7 +76,7 @@ export default function PostEditor({
     ],
     editorProps: {
       attributes: {
-        class: "h-[400px] overflow-y-auto",
+        class: "h-[500px] overflow-y-auto",
       },
     },
     onUpdate({ editor }) {
@@ -172,6 +172,23 @@ export default function PostEditor({
             className="w-full px-3 py-2 text-2xl"
           />
         </section>
+        <section className="flex flex-col gap-2">
+          <input
+            type="text"
+            value={post.cover_image ?? ""}
+            onChange={(e) => setPost({ ...post, cover_image: e.target.value })}
+            placeholder="Cover Image URL: https://..."
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {post.cover_image && (
+            <img
+              src={post.cover_image}
+              alt="Cover Preview"
+              className="w-56 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          )}
+        </section>
+
         {/* <label>Category</label> */}
         <section className="flex flex-col gap-2">
           <select
@@ -179,6 +196,8 @@ export default function PostEditor({
             onChange={(e) => setPost({ ...post, category: e.target.value })}
             className="w-50 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
+            <option>Draft</option>
+
             <option>Workshop</option>
             <option>Journal</option>
           </select>

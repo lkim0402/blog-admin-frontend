@@ -17,7 +17,7 @@ export default function CreatePost() {
     title: "",
     content: "",
     body: "",
-    category: "Workshop",
+    category: "Draft",
     date: new Date().toISOString(),
     updated_date: "",
     tags: [],

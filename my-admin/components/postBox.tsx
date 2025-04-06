@@ -40,7 +40,9 @@ export default function PostBox({
           className={`px-2 py-1 rounded-full text-xs font-medium  ${
             category == "Journal"
               ? "bg-blue-900 text-blue-200"
-              : "bg-amber-500 text-amber-50"
+              : category == "Workshop"
+              ? "bg-amber-500 text-amber-50"
+              : "bg-gray-600 text-gray-300"
           } `}
         >
           {category}

@@ -5,6 +5,7 @@ export interface Post {
   body: string;
   category: string;
   date: string;
+  cover_image?: string;
   updated_date?: string;
   tags?: string[];
 }

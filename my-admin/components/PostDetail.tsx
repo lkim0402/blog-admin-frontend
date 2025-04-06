@@ -13,6 +13,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
+import React from "react";
 
 const lowlight = createLowlight(all);
 
@@ -81,6 +82,7 @@ export default function PostDetail() {
         category: data.category || "",
         date: data.date || new Date(),
         updated_date: data.updated_date || "",
+        cover_image: data.cover_image || "",
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -131,6 +133,7 @@ export default function PostDetail() {
             body: post.body,
             date: post.date,
             updated_date: new Date().toISOString(),
+            cover_image: post.cover_image,
           }),
         }
       );
@@ -184,11 +187,13 @@ export default function PostDetail() {
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                 {/* Category with badge style */}
                 <span
-                  className={`px-2 py-1  ${
+                  className={`px-2 py-1 rounded-full text-xs font-medium  ${
                     post.category == "Journal"
                       ? "bg-blue-900 text-blue-200"
-                      : "bg-amber-500 text-amber-50"
-                  } rounded-full text-xs font-medium `}
+                      : post.category == "Workshop"
+                      ? "bg-amber-500 text-amber-50"
+                      : "bg-gray-600 text-gray-300"
+                  } `}
                 >
                   {post.category}
                 </span>
@@ -257,6 +262,8 @@ export default function PostDetail() {
                     })}
                   </span>
                 )}
+
+                {post.cover_image}
               </div>
             </div>
             <hr className="h-px my-5 bg-gray-200 border-0" />
