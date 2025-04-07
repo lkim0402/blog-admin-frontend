@@ -28,6 +28,7 @@ export default function PostDetail() {
     category: "",
     date: new Date().toISOString(),
     updated_date: "",
+    tags: [],
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -83,6 +84,7 @@ export default function PostDetail() {
         date: data.date || new Date(),
         updated_date: data.updated_date || "",
         cover_image: data.cover_image || "",
+        tags: data.tags || [],
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -134,6 +136,7 @@ export default function PostDetail() {
             date: post.date,
             updated_date: new Date().toISOString(),
             cover_image: post.cover_image,
+            tags: post.tags,
           }),
         }
       );
@@ -181,65 +184,24 @@ export default function PostDetail() {
 
           {error && <div className="text-red-500">{error}</div>}
           <div>
-            <div className="mb-8 space-y-2">
+            <div className="mb-8 space-y-2 ">
               <h1 className="text-3xl font-bold ">{post.title}</h1>
-
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                {/* Category with badge style */}
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium  ${
-                    post.category == "Journal"
-                      ? "bg-blue-900 text-blue-200"
-                      : post.category == "Workshop"
-                      ? "bg-amber-500 text-amber-50"
-                      : "bg-gray-600 text-gray-300"
-                  } `}
-                >
-                  {post.category}
-                </span>
-
-                {/* ID */}
-                <span className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+              <div className="text-sm text-gray-600 dark:text-gray-400 flex flex-col space-y-2">
+                <div className="flex flex-wrap items-center gap-4">
+                  {/* Category with badge style */}
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium  ${
+                      post.category == "Journal"
+                        ? "bg-blue-900 text-blue-200"
+                        : post.category == "Workshop"
+                        ? "bg-amber-500 text-amber-50"
+                        : "bg-gray-600 text-gray-300"
+                    } `}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                    />
-                  </svg>
-                  Post #{id}
-                </span>
+                    {post.category}
+                  </span>
 
-                {/* Created date */}
-                <span className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
-
-                {/* Updated date (if exists) */}
-                {post.updated_date && (
+                  {/* ID */}
                   <span className="flex items-center">
                     <svg
                       className="w-4 h-4 mr-1"
@@ -251,19 +213,70 @@ export default function PostDetail() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
                       />
                     </svg>
-                    Updated:{" "}
-                    {new Date(post.updated_date).toLocaleDateString("en-US", {
+                    Post #{id}
+                  </span>
+
+                  {/* Created date */}
+                  <span className="flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    {new Date(post.date).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
                     })}
                   </span>
-                )}
-
-                {post.cover_image}
+                  {/* Updated date (if exists) */}
+                  {post.updated_date && (
+                    <span className="flex items-center">
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                      Updated:{" "}
+                      {new Date(post.updated_date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                  )}
+                </div>
+                <div>{post.cover_image}</div>
+                <div className="flex flex-row gap-2">
+                  {post.tags &&
+                    post.tags.map((el, index) => (
+                      <div
+                        key={index}
+                        className="text-sm px-2 py-1 rounded-md bg-blue-100 text-blue-800"
+                      >
+                        #{el.tag}
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
             <hr className="h-px my-5 bg-gray-200 border-0" />

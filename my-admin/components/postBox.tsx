@@ -15,6 +15,7 @@ export default function PostBox({
   category,
   date,
   updated_date,
+  tags, //obj of tags
   onDelete,
 }: Post & { onDelete: (id: string) => void }) {
   const navigate = useNavigate();
@@ -47,6 +48,11 @@ export default function PostBox({
         >
           {category}
         </span>
+        <div>
+          {tags?.map((tagObj) => {
+            return <p key={tagObj._id}>{tagObj.tag}</p>;
+          })}
+        </div>
         <p className="text-gray-500">
           Date: {new Date(date).toLocaleDateString()}
         </p>

@@ -95,9 +95,9 @@ export default function Dashboard() {
           </h2>
 
           {posts.length === 0 ? (
-            <p className="italic text-gray-500 text-center">
+            <div className="italic text-gray-500 text-center">
               No posts available.
-            </p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 gap-4">
               {posts.map((el) => (

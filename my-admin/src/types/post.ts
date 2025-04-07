@@ -7,5 +7,10 @@ export interface Post {
   date: string;
   cover_image?: string;
   updated_date?: string;
-  tags?: string[];
+  tags?: Tag[];
 }
+
+type Tag = {
+  _id: string;
+  tag: string;
+};

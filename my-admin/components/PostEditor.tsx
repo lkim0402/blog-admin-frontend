@@ -7,6 +7,7 @@ import ImageResize from "tiptap-extension-resize-image";
 import TextAlign from "@tiptap/extension-text-align";
 
 import PostButtonMenu from "./PostButtonMenu";
+import { TagsInput } from "./TagsInput";
 import Button from "./button";
 import { all, createLowlight } from "lowlight";
 import React, { useCallback, useEffect, useState, useRef } from "react";
@@ -201,6 +202,9 @@ export default function PostEditor({
             <option>Workshop</option>
             <option>Journal</option>
           </select>
+        </section>
+        <section className="flex flex-col gap-2">
+          <TagsInput post={post} setPost={setPost} />
         </section>
         {/* menu buttons */}
         <section className="flex flex-wrap ">
