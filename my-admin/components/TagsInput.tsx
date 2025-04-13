@@ -132,47 +132,55 @@ export function TagsInput({ post, setPost }: TagsInputProps) {
 
   // removing tag
   const removeTag = async (tagToRemove: Tag, isSelectedTags: boolean) => {
-    try {
-      // Remove from selected tags (post.tags) if it's there
-      setPost((prevPost) => ({
-        ...prevPost,
-        tags: (prevPost.tags ?? []).filter(
-          (tagObj) => tagObj._id !== tagToRemove._id
-        ),
-      }));
+    if (
+      window.confirm(
+        `Are you sure you want to delete tag "${tagToRemove.tag}"?`
+      )
+    ) {
+      try {
+        // Remove from selected tags (post.tags) if it's there
+        setPost((prevPost) => ({
+          ...prevPost,
+          tags: (prevPost.tags ?? []).filter(
+            (tagObj) => tagObj._id !== tagToRemove._id
+          ),
+        }));
 
-      // Remove from available tags list
-      if (!isSelectedTags) {
-        setAvailableTags((prevAvailable) =>
-          prevAvailable.filter((tag) => tag._id !== tagToRemove._id)
-        );
-      }
-
-      console.log("Removing", tagToRemove);
-
-      if (isSelectedTags) {
-        return; // If it's only from selected tags, skip DB delete
-      }
-
-      // Delete from the database
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/tagDelete`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            tagToRemove,
-          }),
+        // Remove from available tags list
+        if (!isSelectedTags) {
+          setAvailableTags((prevAvailable) =>
+            prevAvailable.filter((tag) => tag._id !== tagToRemove._id)
+          );
         }
-      );
 
-      if (!response.ok) {
-        console.error("Failed to delete tag from database");
+        console.log("Removing", tagToRemove);
+
+        if (isSelectedTags) {
+          return; // If it's only from selected tags, skip DB delete
+        }
+
+        // Delete from the database
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/tagDelete`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tagToRemove,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          console.error("Failed to delete tag from database");
+        }
+      } catch (error) {
+        console.error("Error deleting tag:", error);
       }
-    } catch (error) {
-      console.error("Error deleting tag:", error);
+    } else {
+      console.log("not deleting tag");
     }
   };
 

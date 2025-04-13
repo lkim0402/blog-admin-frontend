@@ -17,7 +17,7 @@ export default function PostBox({
   updated_date,
   tags, //obj of tags
   onDelete,
-}: Post & { onDelete: (id: string) => void }) {
+}: Post & { onDelete: (id: string, title: string) => void }) {
   const navigate = useNavigate();
 
   function onExpand() {
@@ -26,7 +26,7 @@ export default function PostBox({
 
   function handleDelete(e: React.MouseEvent) {
     e.stopPropagation();
-    onDelete(_id);
+    onDelete(_id, title);
   }
 
   return (

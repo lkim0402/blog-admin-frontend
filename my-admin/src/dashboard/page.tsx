@@ -40,30 +40,34 @@ export default function Dashboard() {
     callPost();
   }, []);
 
-  async function onDelete(id: string) {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/delete/${id}`,
-        {
-          method: "DELETE",
+  async function onDelete(id: string, title: string) {
+    if (window.confirm(`Are you sure you want to delete post "${title}"`)) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/delete/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error, status: ${response.status}`);
         }
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error, status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log(data);
+        const data = await response.json();
+        console.log(data);
 
-      // Remove the deleted post from state
-      setPosts(posts.filter((post) => post._id !== id));
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        console.log(error);
+        // Remove the deleted post from state
+        setPosts(posts.filter((post) => post._id !== id));
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          console.log(error);
+        }
+      } finally {
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
+    } else {
+      console.log("cancel");
     }
   }
 
