@@ -13,7 +13,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
-import React from "react";
+// import React from "react";
 
 const lowlight = createLowlight(all);
 
