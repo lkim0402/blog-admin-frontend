@@ -79,7 +79,7 @@ export default function PostEditor({
     ],
     editorProps: {
       attributes: {
-        class: "h-[500px] overflow-y-auto",
+        class: "h-[45rem] overflow-y-auto",
       },
     },
     onUpdate({ editor }) {
@@ -156,7 +156,7 @@ export default function PostEditor({
 
   return (
     <div>
-      <div className="flex justify-between gap-2 mb-5">
+      <div className="flex justify-between gap-2 my-6 ">
         <button onClick={onPrevious} className="hover:cursor-pointer">
           <ArrowLeftFromLine />
         </button>
@@ -172,7 +172,8 @@ export default function PostEditor({
             onChange={(e) => setPost({ ...post, title: e.target.value })}
             value={post.title ?? ""}
             placeholder="Title"
-            className="w-full px-3 py-2 text-2xl"
+            className="w-full text-2xl
+            border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </section>
         <section className="flex flex-col gap-2">

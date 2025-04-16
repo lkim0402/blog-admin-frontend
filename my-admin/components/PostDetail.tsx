@@ -185,7 +185,7 @@ export default function PostDetail() {
     <div className="flex ">
       <Sidebar categories={categories} onClick={(cat) => handleClick(cat)} />
 
-      <div className="ml-58 flex-col space-y-3 max-w-4xl mx-auto p-4">
+      <div className="ml-58 mr-10 flex-1 flex-col space-y-3  mx-auto p-4">
         {isLoading ? (
           <div>Loading...</div>
         ) : isEditing ? (
@@ -197,7 +197,7 @@ export default function PostDetail() {
           />
         ) : (
           <div>
-            <div className="flex justify-between gap-2 mb-3">
+            <div className="flex justify-between gap-2 my-6">
               <button onClick={onBack} className="hover:cursor-pointer">
                 <ArrowLeftFromLine />
               </button>

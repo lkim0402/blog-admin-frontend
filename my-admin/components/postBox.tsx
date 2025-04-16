@@ -83,13 +83,13 @@ export default function PostBox({
       {/* buttons */}
       <section className="flex flex-row">
         <button
-          className="rounded-lg bg-gray-100 w-[4rem] m-1 border-0"
+          className="hover:cursor-pointer rounded-lg bg-gray-100 w-[4rem] m-1 border-0"
           onClick={onExpand}
         >
           Expand
         </button>
         <button
-          className="rounded-lg bg-red-100 w-[4rem] m-1 border-0"
+          className="hover:cursor-pointer rounded-lg bg-red-100 w-[4rem] m-1 border-0"
           onClick={handleDelete}
         >
           Delete
