@@ -110,20 +110,44 @@ export default function PostDetail() {
     }
   }, [post.body, viewEditor]);
 
-  function onBack() {
-    navigate(`/dashboard`);
-  }
-
   function handleEdit() {
     setIsEditing(true);
   }
 
+  // getting the category param
+  const searchParams = new URLSearchParams(location.search);
+  // category={value} into string
+  const backLink = `/dashboard?${searchParams.toString()}`;
+  // getting the value only
+  const currentCategory = searchParams.get("category");
+
+  function onBack() {
+    // navigate(`/dashboard`);
+    console.log("onBack");
+    navigate(backLink);
+  }
+
+  // =============== when editing ===============
+  // clicking back button
   function handleCancel() {
-    if (window.confirm("Do you want to go back without saving?")) {
-      navigate(`/dashboard`);
+    console.log("handleCancel");
+    if (window.confirm("Go back to post (read) w/o saving?")) {
+      setIsEditing(false);
     }
-    setIsEditing(false);
     return;
+  }
+  // clicking a category in the side bar
+  function handleClick() {
+    console.log("handleClick");
+    if (isEditing) {
+      if (window.confirm("Do you want to exit editing?")) {
+        // Preserve category from current URL when navigating back
+        navigate(backLink);
+      }
+      return;
+    }
+    // Preserve category from current URL
+    navigate(backLink);
   }
 
   async function handleSave() {
@@ -169,21 +193,15 @@ export default function PostDetail() {
       }
     }
   }
-  // const [category, setCategory] = useState("All");
   const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
 
-  function handleClick(cat: string) {
-    if (isEditing) {
-      if (window.confirm("Do you want to exit editing?")) {
-        navigate(`/dashboard?category=${encodeURIComponent(cat)}`);
-      }
-      return;
-    }
-    navigate(`/dashboard?category=${encodeURIComponent(cat)}`);
-  }
   return (
     <div className="flex ">
-      <Sidebar categories={categories} onClick={(cat) => handleClick(cat)} />
+      <Sidebar
+        cur={currentCategory ?? undefined}
+        categories={categories}
+        onClick={() => handleClick()}
+      />
 
       <div className="ml-58 mr-10 flex-1 flex-col space-y-3  mx-auto p-4">
         {isLoading ? (

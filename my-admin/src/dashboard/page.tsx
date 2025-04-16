@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PostBox from "../../components/postBox";
 import Button from "../../components/button";
 import { Sidebar } from "../../components/Sidebar";
@@ -10,9 +10,12 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  // const [category, setCategory] = useState("All");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = useState(
-    new URLSearchParams(window.location.search).get("category") || "All"
+    searchParams.get("category") || "All"
   );
+
   const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
 
   function handleCreate() {
@@ -43,6 +46,9 @@ export default function Dashboard() {
       }
     };
     callPost();
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("category", "All");
+    setSearchParams(newSearchParams);
   }, []);
 
   async function onDelete(id: string, title: string) {
@@ -76,21 +82,24 @@ export default function Dashboard() {
     }
   }
 
-  // function onClick(category: string) {
-  //   setCategory(category);
-  //   // navigate(`/${link}`);
-  // }
+  const handleCategoryChange = (cat: string) => {
+    setCategory(cat);
+    // Update the URL parameter without affecting other existing parameters
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("category", cat);
+    setSearchParams(newSearchParams);
+  };
 
   return (
     <div className="flex">
       <Sidebar
         categories={categories}
         cur={category}
-        onClick={(cat) => setCategory(cat)}
+        // onClick={(cat) => setCategory(cat)
+        onClick={handleCategoryChange}
       />
       <div className="ml-58 mr-10 flex-1 mt-8 p-6  rounded-lg">
         <h1 className="text-3xl font-bold text-gray-800  mb-6">Dashboard</h1>
-
         <div className="flex justify-between items-center mb-6">
           <Button text="Create Post" onClick={handleCreate} />
         </div>
@@ -116,11 +125,6 @@ export default function Dashboard() {
                 No posts available.
               </div>
             ) : (
-              // sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5
-              // sm:bg-emerald-500
-              // md:bg-pink-400
-              // lg:bg-amber-400
-              // xl:bg-blue-300
               <div
                 className="grid 
                 gap-4 

@@ -20,8 +20,10 @@ export default function PostBox({
 }: Post & { onDelete: (id: string, title: string) => void }) {
   const navigate = useNavigate();
 
+  // Preserve current category in navigation
   function onExpand() {
-    navigate(`/post/${_id}`);
+    const currentCategory = location.search; // gets "?category=Draft" etc
+    navigate(`/post/${_id}${currentCategory}`);
   }
 
   function handleDelete(e: React.MouseEvent) {
