@@ -6,6 +6,7 @@ import PostEditor from "../../components/PostEditor";
 
 import { useState } from "react";
 import { Post } from "../types/post";
+import { Sidebar } from "../../components/Sidebar";
 
 export default function CreatePost() {
   // utilities
@@ -62,16 +63,26 @@ export default function CreatePost() {
   function handlePrevious() {
     navigate("/dashboard");
   }
+  const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
+  function handleClick(cat: string) {
+    if (window.confirm("Do you want to exit the post without saving?")) {
+      navigate(`/dashboard?category=${encodeURIComponent(cat)}`);
+    }
+    return;
+  }
 
   return (
-    <div className="flex flex-col space-y-3 max-w-4xl mx-auto p-4">
-      <PostEditor
-        post={post}
-        setPost={setPost}
-        onSubmit={handleSubmit}
-        onPrevious={handlePrevious}
-      />
-      {error && <div className="text-red-300">{error}</div>}
+    <div className="flex">
+      <Sidebar categories={categories} onClick={(cat) => handleClick(cat)} />
+      <div className="ml-58 flex flex-col space-y-3 max-w-4xl mx-auto p-4">
+        <PostEditor
+          post={post}
+          setPost={setPost}
+          onSubmit={handleSubmit}
+          onPrevious={handlePrevious}
+        />
+        {error && <div className="text-red-300">{error}</div>}
+      </div>
     </div>
   );
 }

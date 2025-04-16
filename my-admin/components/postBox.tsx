@@ -32,13 +32,19 @@ export default function PostBox({
   return (
     <div
       className="border-2 
-     justify-between border-gray-500 rounded flex flex-row p-4"
+      justify-between border-gray-500 rounded 
+      flex flex-col
+      min-h-[15rem] 
+      max-w-[290px]
+      w-full 
+      p-3
+      text-[0.75em]
+      "
     >
       {/* description */}
       <section>
-        <p className=" font-bold mb-2">{title}</p>
         <span
-          className={`px-2 py-1 rounded-full text-xs font-medium ${
+          className={`px-2 py-1 rounded-full font-sm ${
             category == "Journal"
               ? "bg-blue-900 text-blue-200"
               : category == "Workshop"
@@ -48,11 +54,12 @@ export default function PostBox({
         >
           {category}
         </span>
+        <p className=" font-bold my-2 text-[1rem]">{title}</p>
         <div className="flex flex-row gap-2 my-2">
           {tags?.map((tagObj) => {
             return (
               <div
-                className="text-sm px-2 py-1 rounded-md bg-blue-100 text-blue-800"
+                className=" px-2 py-1 rounded-md bg-blue-100 text-blue-800"
                 key={tagObj._id}
               >
                 #{tagObj.tag}
@@ -60,18 +67,21 @@ export default function PostBox({
             );
           })}
         </div>
-        <p className="text-gray-500">
-          Date: {new Date(date).toLocaleDateString()}
-        </p>
-        {updated_date && (
-          <p className="text-gray-500">
-            Updated date: {new Date(updated_date).toLocaleDateString()}
+        {/* date */}
+        <div>
+          <p className="text-gray-500 mr-1">
+            Date: {new Date(date).toLocaleDateString()}
           </p>
-        )}
+          {updated_date && (
+            <p className="text-gray-500">
+              Updated date: {new Date(updated_date).toLocaleDateString()}
+            </p>
+          )}
+        </div>
       </section>
 
       {/* buttons */}
-      <section className="flex flex-col">
+      <section className="flex flex-row">
         <button
           className="rounded-lg bg-gray-100 w-[4rem] m-1 border-0"
           onClick={onExpand}

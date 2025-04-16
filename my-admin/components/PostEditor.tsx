@@ -156,7 +156,7 @@ export default function PostEditor({
     <div>
       <div className="flex flex-row gap-2 mb-3">
         {/* submitting the new/edited content */}
-        <Button text={"Submit"} onClick={onSubmit} />
+        <Button text={"Save"} onClick={onSubmit} />
         {/* going back to home without saving*/}
         <Button text={"Go back"} onClick={onPrevious} />
       </div>

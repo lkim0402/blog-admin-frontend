@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PostBox from "../../components/postBox";
 import Button from "../../components/button";
+import { Sidebar } from "../../components/Sidebar";
 import { Post } from "../types/post";
 
 export default function Dashboard() {
@@ -9,6 +10,10 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [category, setCategory] = useState(
+    new URLSearchParams(window.location.search).get("category") || "All"
+  );
+  const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
 
   function handleCreate() {
     navigate("/create");
@@ -71,46 +76,87 @@ export default function Dashboard() {
     }
   }
 
+  // function onClick(category: string) {
+  //   setCategory(category);
+  //   // navigate(`/${link}`);
+  // }
+
   return (
-    <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded-lg">
-      <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
-        Dashboard
-      </h1>
+    <div className="flex">
+      {/* <div className="fixed h-screen w-48 bg-blue-950 flex flex-col items-center justify-center">
+        <div className="space-y-2 pl-4 text-white text-xl ">
+          {categories.map((el) => {
+            return (
+              <div className="">
+                <button onClick={() => onClick(el)}>{el}</button>
+              </div>
+            );
+          })}
+        </div>
+      </div> */}
+      <Sidebar categories={categories} onClick={(cat) => setCategory(cat)} />
+      <div className="ml-58 mr-10 flex-1 mt-8 p-6  rounded-lg">
+        <h1 className="text-3xl font-bold text-gray-800  mb-6">Dashboard</h1>
 
-      <div className="flex justify-between items-center mb-6">
-        <p className="text-gray-600">Welcome back! Manage your posts below.</p>
-        <Button text="Create Post" onClick={handleCreate} />
+        <div className="flex justify-between items-center mb-6">
+          <Button text="Create Post" onClick={handleCreate} />
+        </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-100 text-red-600 p-3 rounded-md mb-4">
+            {error}
+          </div>
+        )}
+
+        {/* Loading State */}
+        {isLoading ? (
+          <div className="italic text-gray-500 text-center">Loading...</div>
+        ) : (
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+              Posts: {category}
+            </h2>
+
+            {posts.length === 0 ? (
+              <div className="italic text-gray-500 text-center">
+                No posts available.
+              </div>
+            ) : (
+              // sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5
+              // sm:bg-emerald-500
+              // md:bg-pink-400
+              // lg:bg-amber-400
+              // xl:bg-blue-300
+              <div
+                className="grid 
+                gap-4 
+               
+              "
+                style={{
+                  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+                }}
+              >
+                {category === "All" // all posts
+                  ? posts.map((el) => (
+                      <PostBox {...el} key={el._id} onDelete={onDelete} />
+                    ))
+                  : category === "Published" // only published posts
+                  ? posts
+                      .filter((el) => el.category !== "Draft")
+                      .map((el) => (
+                        <PostBox {...el} key={el._id} onDelete={onDelete} />
+                      ))
+                  : posts // else, filter by category
+                      .filter((el) => el.category == category)
+                      .map((el) => (
+                        <PostBox {...el} key={el._id} onDelete={onDelete} />
+                      ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-
-      {/* Error Message */}
-      {error && (
-        <div className="bg-red-100 text-red-600 p-3 rounded-md mb-4">
-          {error}
-        </div>
-      )}
-
-      {/* Loading State */}
-      {isLoading ? (
-        <div className="italic text-gray-500 text-center">Loading...</div>
-      ) : (
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            All Posts
-          </h2>
-
-          {posts.length === 0 ? (
-            <div className="italic text-gray-500 text-center">
-              No posts available.
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {posts.map((el) => (
-                <PostBox {...el} key={el._id} onDelete={onDelete} />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
