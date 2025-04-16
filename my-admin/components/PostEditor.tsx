@@ -14,6 +14,8 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Post } from "../src/types/post";
 const lowlight = createLowlight(all);
 
+import { ArrowLeftFromLine } from "lucide-react";
+
 // Cloudinary widget type definition
 declare global {
   interface Window {
@@ -154,11 +156,11 @@ export default function PostEditor({
 
   return (
     <div>
-      <div className="flex flex-row gap-2 mb-3">
-        {/* submitting the new/edited content */}
+      <div className="flex justify-between gap-2 mb-5">
+        <button onClick={onPrevious} className="hover:cursor-pointer">
+          <ArrowLeftFromLine />
+        </button>
         <Button text={"Save"} onClick={onSubmit} />
-        {/* going back to home without saving*/}
-        <Button text={"Go back"} onClick={onPrevious} />
       </div>
 
       {/* The menu */}

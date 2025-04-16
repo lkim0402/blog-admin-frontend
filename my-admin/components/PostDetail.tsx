@@ -14,6 +14,8 @@ import { all, createLowlight } from "lowlight";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import { Sidebar } from "./Sidebar";
+import { ArrowLeftFromLine } from "lucide-react";
+
 // import React from "react";
 
 const lowlight = createLowlight(all);
@@ -195,8 +197,10 @@ export default function PostDetail() {
           />
         ) : (
           <div>
-            <div className="flex flex-row gap-2 mb-3">
-              <Button text={"Home"} onClick={onBack} />
+            <div className="flex justify-between gap-2 mb-3">
+              <button onClick={onBack} className="hover:cursor-pointer">
+                <ArrowLeftFromLine />
+              </button>
               <Button text={"Edit"} onClick={handleEdit} />
             </div>
 

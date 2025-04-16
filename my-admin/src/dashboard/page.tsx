@@ -83,18 +83,11 @@ export default function Dashboard() {
 
   return (
     <div className="flex">
-      {/* <div className="fixed h-screen w-48 bg-blue-950 flex flex-col items-center justify-center">
-        <div className="space-y-2 pl-4 text-white text-xl ">
-          {categories.map((el) => {
-            return (
-              <div className="">
-                <button onClick={() => onClick(el)}>{el}</button>
-              </div>
-            );
-          })}
-        </div>
-      </div> */}
-      <Sidebar categories={categories} onClick={(cat) => setCategory(cat)} />
+      <Sidebar
+        categories={categories}
+        cur={category}
+        onClick={(cat) => setCategory(cat)}
+      />
       <div className="ml-58 mr-10 flex-1 mt-8 p-6  rounded-lg">
         <h1 className="text-3xl font-bold text-gray-800  mb-6">Dashboard</h1>
 
