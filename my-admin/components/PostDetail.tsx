@@ -198,7 +198,7 @@ export default function PostDetail() {
 
   return (
     <div className="flex ">
-      <div className="hidden lg:block lg:w-1/5">
+      <div className="hidden lg:block ">
         <Sidebar
           cur={currentCategory ?? undefined}
           categories={categories}
@@ -206,7 +206,7 @@ export default function PostDetail() {
         />
       </div>
 
-      <div className="w-full lg:ml-0  lg:w-4/5 px-10 lg:px-4 py-6 space-y-3">
+      <div className="w-full lg:ml-58 px-8 lg:px-20 py-6 space-y-3">
         {isLoading ? (
           <div>Loading...</div>
         ) : isEditing ? (
@@ -311,7 +311,7 @@ export default function PostDetail() {
                       </span>
                     )}
                   </div>
-                  <div>{post.cover_image}</div>
+                  <div className="break-all">{post.cover_image}</div>
                   <div className="flex flex-row gap-2">
                     {post.tags &&
                       post.tags.map((el, index) => (
