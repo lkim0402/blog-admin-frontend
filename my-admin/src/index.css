@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @tailwind utilities;
+@import "highlight.js/styles/base16/mocha.min.css";
 
 .ProseMirror {
   border: 1px solid #d1d5dc;
@@ -67,7 +68,7 @@
     font-size: 0.875rem;
   }
   /* Code styling */
-  .hljs-comment,
+  /* .hljs-comment,
   .hljs-quote {
     color: #616161;
   }
@@ -82,9 +83,9 @@
   .hljs-selector-id,
   .hljs-selector-class {
     color: #f98181;
-  }
+  } */
 
-  .hljs-number,
+  /* .hljs-number,
   .hljs-meta,
   .hljs-built_in,
   .hljs-builtin-name,
@@ -126,7 +127,7 @@
   cursor: pointer;
   &:hover {
     color: var(--color-blue-300);
-  }
+  } */
 }
 
 /* Add to your index.css or component styles */
