@@ -73,8 +73,10 @@ export default function CreatePost() {
 
   return (
     <div className="flex">
-      <Sidebar categories={categories} onClick={(cat) => handleClick(cat)} />
-      <div className="ml-58 flex flex-col space-y-3 max-w-4xl mx-auto p-4">
+      <div className="hidden lg:block ">
+        <Sidebar categories={categories} onClick={(cat) => handleClick(cat)} />
+      </div>
+      <div className="lg:ml-58 flex flex-col space-y-3 max-w-4xl mx-auto p-4">
         <PostEditor
           post={post}
           setPost={setPost}

@@ -4,6 +4,7 @@ import PostBox from "../../components/postBox";
 import Button from "../../components/button";
 import { Sidebar } from "../../components/Sidebar";
 import { Post } from "../types/post";
+import { Menu, X } from "lucide-react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -15,6 +16,20 @@ export default function Dashboard() {
   const [category, setCategory] = useState(
     searchParams.get("category") || "All"
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setShowSidebar(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
 
@@ -90,15 +105,73 @@ export default function Dashboard() {
     setSearchParams(newSearchParams);
   };
 
+  const [showSidebar, setShowSidebar] = useState(false);
+
   return (
     <div className="flex">
-      <Sidebar
-        categories={categories}
-        cur={category}
-        // onClick={(cat) => setCategory(cat)
-        onClick={handleCategoryChange}
-      />
-      <div className="ml-58 mr-10 flex-1 mt-8 p-6  rounded-lg">
+      <div className="hidden lg:block ">
+        <Sidebar
+          categories={categories}
+          cur={category}
+          // onClick={(cat) => setCategory(cat)
+          onClick={handleCategoryChange}
+        />
+      </div>
+
+      {/* sidebar */}
+      <div>
+        {showSidebar && (
+          <div
+            onClick={() => setShowSidebar(false)} // click to close sidebar
+            className="fixed inset-0 bg-black/50 z-40"
+          ></div>
+        )}
+        <div
+          className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-[#15182a] 
+                p-6 z-50 
+                
+                shadow-lg flex flex-col gap-4 
+                duration-300 ease-in-out 
+                ${showSidebar ? "translate-x-0" : "-translate-x-full"}`}
+        >
+          <div className="flex justify-between mb-5">
+            <p className="font-bold text-white">Menu</p>
+            <button
+              onClick={() => setShowSidebar(false)} // click to close sidebar
+              aria-label="exit button"
+            >
+              <X className="text-white" />
+            </button>
+          </div>
+          {categories.map((el) => {
+            return (
+              <div>
+                <button
+                  onClick={() => handleCategoryChange(el)}
+                  className={`transition-transform text-white
+                  hover:scale-105 hover:text-blue-300
+                  cursor-pointer
+                  ${el === category && "scale-105 text-blue-300"}
+                  `}
+                >
+                  {el}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="lg:ml-58 lg:mr-10 mx-6 flex-1 lg:mt-8 p-6  rounded-lg">
+        <div className="lg:hidden">
+          <button
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="mr-10 my-3"
+            aria-label="side menu button"
+          >
+            <Menu size={30} />
+          </button>
+        </div>
         <h1 className="text-3xl font-bold text-gray-800  mb-6">Dashboard</h1>
         <div className="flex justify-between items-center mb-6">
           <Button text="Create Post" onClick={handleCreate} />
@@ -128,7 +201,8 @@ export default function Dashboard() {
               <div
                 className="grid 
                 gap-4 
-               
+                
+               place-items-center
               "
                 style={{
                   gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",

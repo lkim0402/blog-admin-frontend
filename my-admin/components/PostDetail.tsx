@@ -15,6 +15,7 @@ import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import { Sidebar } from "./Sidebar";
 import { ArrowLeftFromLine } from "lucide-react";
+import React from "react";
 
 // import React from "react";
 
@@ -197,13 +198,15 @@ export default function PostDetail() {
 
   return (
     <div className="flex ">
-      <Sidebar
-        cur={currentCategory ?? undefined}
-        categories={categories}
-        onClick={() => handleClick()}
-      />
+      <div className="hidden lg:block lg:w-1/5">
+        <Sidebar
+          cur={currentCategory ?? undefined}
+          categories={categories}
+          onClick={() => handleClick()}
+        />
+      </div>
 
-      <div className="ml-58 mr-10 flex-1 flex-col space-y-3  mx-auto p-4">
+      <div className="w-full lg:ml-0  lg:w-4/5 px-10 lg:px-4 py-6 space-y-3">
         {isLoading ? (
           <div>Loading...</div>
         ) : isEditing ? (
