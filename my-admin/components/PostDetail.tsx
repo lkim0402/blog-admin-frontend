@@ -206,7 +206,7 @@ export default function PostDetail() {
         />
       </div>
 
-      <div className="w-full lg:ml-58 px-8 lg:px-20 py-6 space-y-3">
+      <div className="w-full lg:ml-48 px-10 md:px-20  py-6 space-y-3">
         {isLoading ? (
           <div>Loading...</div>
         ) : isEditing ? (

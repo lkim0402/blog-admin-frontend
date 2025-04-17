@@ -76,7 +76,8 @@ export default function CreatePost() {
       <div className="hidden lg:block ">
         <Sidebar categories={categories} onClick={(cat) => handleClick(cat)} />
       </div>
-      <div className="lg:ml-58 flex flex-col space-y-3 max-w-4xl mx-auto p-4">
+      {/* <div className="lg:ml-58 flex flex-col space-y-3 max-w-4xl mx-auto p-4"> */}
+      <div className="w-full lg:ml-48 px-10 md:px-20  py-6 space-y-3">
         <PostEditor
           post={post}
           setPost={setPost}
