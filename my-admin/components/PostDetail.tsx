@@ -52,7 +52,7 @@ export default function PostDetail() {
         types: ["heading", "paragraph"],
       }),
       Image.configure({
-        inline: true,
+        inline: false,
         allowBase64: true,
       }),
       CodeBlockLowlight.configure({
