@@ -26,6 +26,8 @@
   align-items: center;
   justify-content: center; */
   border-radius: 0.5em;
+  margin-top: 0.9rem !important;
+  margin-bottom: 0.9rem !important;
 }
 
 .ProseMirror img.inline-image {
