@@ -8,6 +8,8 @@ import { useState } from "react";
 import { Post } from "../types/types";
 import { Sidebar } from "../../components/Sidebar";
 
+import { categories } from "../types/types";
+
 export default function CreatePost() {
   // utilities
   const [error, setError] = useState("");
@@ -18,10 +20,11 @@ export default function CreatePost() {
     title: "",
     content: "",
     body: "",
-    category: "Draft",
+    category: "",
     date: new Date().toISOString(),
     updated_date: "",
     tags: [],
+    status: "Draft",
   });
 
   async function handleSubmit() {
@@ -40,6 +43,7 @@ export default function CreatePost() {
             body: post.body,
             date: new Date().toISOString(),
             tags: post.tags,
+            status: post.status,
           }),
         }
       );
@@ -63,7 +67,8 @@ export default function CreatePost() {
   function handlePrevious() {
     navigate("/dashboard");
   }
-  const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
+  // const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
+
   function handleClick(cat: string) {
     if (window.confirm("Do you want to exit the post without saving?")) {
       navigate(`/dashboard?category=${encodeURIComponent(cat)}`);
