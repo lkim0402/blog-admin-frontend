@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Post } from "../src/types/post";
+import { Tag } from "../src/types/post";
 
 interface TagsInputProps {
   post: Post;
   setPost: React.Dispatch<React.SetStateAction<Post>>;
 }
-type Tag = {
-  _id: string;
-  tag: string;
-};
 
 export function TagsInput({ post, setPost }: TagsInputProps) {
   const [tagInput, setTagInput] = useState("");

@@ -13,7 +13,7 @@ export interface Post {
 
 export const categories = ["All", "Workshop", "Journal"];
 
-type Tag = {
+export type Tag = {
   _id: string;
   tag: string;
 };

@@ -6,6 +6,7 @@ import { Sidebar } from "../../components/Sidebar";
 import { Post } from "../types/post";
 import { Menu, X } from "lucide-react";
 import { categories } from "../types/post";
+import { Tag } from "../types/post";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -110,6 +111,39 @@ export default function Dashboard() {
   };
 
   const [showSidebar, setShowSidebar] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("All");
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchTags() {
+      try {
+        setIsLoading(true);
+        // Replace this with your actual API call
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/tags`
+        );
+        const data = await response.json();
+        console.log("data when fetching: ", data);
+        setAvailableTags(data.tags);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchTags();
+  }, []);
+
+  const handleSelectTag = (tag: string) => {
+    const tags = [...selectedTags, tag];
+    setSelectedTags(tags);
+  };
+
+  const removeTag = (tag: string) => {
+    setSelectedTags(selectedTags.filter((t) => t !== tag));
+  };
 
   return (
     <div className="flex">
@@ -194,9 +228,76 @@ export default function Dashboard() {
           <div className="italic text-gray-500 text-center">Loading...</div>
         ) : (
           <div>
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-              Posts: {category}
-            </h2>
+            <div className="flex flex-col gap-2">
+              <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+                Posts: {category}
+              </h2>
+              <div>
+                <span className="mr-2">Status:</span>
+                <select
+                  value={currentStatus ?? ""}
+                  onChange={(e) => setCurrentStatus(e.target.value)}
+                  className="w-50 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option>All</option>
+                  <option>Published</option>
+                  <option>Draft</option>
+                </select>
+              </div>
+
+              {/* Available tags from database */}
+              <div className="mt-2">
+                <label className="text-sm">Available Tags:</label>
+                {isLoading ? (
+                  <div className="text-sm text-gray-500">Loading tags...</div>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {availableTags.map((tagObj: Tag) => (
+                      <div className={`text-sm rounded-md`}>
+                        <button
+                          key={tagObj._id}
+                          onClick={() => handleSelectTag(tagObj.tag)}
+                          disabled={selectedTags.includes(tagObj.tag)}
+                          className="bg-blue-100 text-blue-800 px-2 py-1 
+                          rounded-md flex items-center"
+                          title="add tag"
+                        >
+                          {tagObj.tag}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Selected tags */}
+              <div className="mt-2 mb-10">
+                <label className="text-sm">Selected Tags:</label>
+                <div className="flex flex-wrap gap-2">
+                  {selectedTags.map((tag, index) => (
+                    <div
+                      key={index}
+                      className="bg-blue-100 text-blue-800 px-2 py-1 
+                      rounded-md flex items-center
+                      text-sm"
+                    >
+                      <span>{tag}</span>
+                      <button
+                        onClick={() => removeTag(tag)}
+                        // className="ml-2 text-blue-500 hover:text-blue-700"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  {(selectedTags || []).length === 0 && (
+                    <div className="text-sm text-gray-500">
+                      No tags selected
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
             {posts.length === 0 ? (
               <div className="italic text-gray-500 text-center">
@@ -213,21 +314,20 @@ export default function Dashboard() {
                   gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
                 }}
               >
-                {category === "All" // all posts
-                  ? posts.map((el) => (
-                      <PostBox {...el} key={el._id} onDelete={onDelete} />
-                    ))
-                  : category === "Published" // only published posts
-                  ? posts
-                      .filter((el) => el.category !== "Draft")
-                      .map((el) => (
-                        <PostBox {...el} key={el._id} onDelete={onDelete} />
-                      ))
-                  : posts // else, filter by category
-                      .filter((el) => el.category == category)
-                      .map((el) => (
-                        <PostBox {...el} key={el._id} onDelete={onDelete} />
-                      ))}
+                {posts
+                  .filter(
+                    (el) =>
+                      (category === "All" || el.category === category) &&
+                      (currentStatus === "All" ||
+                        el.status === currentStatus) &&
+                      (selectedTags.length === 0 ||
+                        selectedTags.some((tag) =>
+                          (el.tags ?? []).some((tagObj) => tagObj.tag === tag)
+                        ))
+                  )
+                  .map((el) => (
+                    <PostBox {...el} key={el._id} onDelete={onDelete} />
+                  ))}
               </div>
             )}
           </div>
