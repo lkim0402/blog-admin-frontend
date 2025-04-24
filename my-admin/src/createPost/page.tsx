@@ -5,7 +5,7 @@ import "../index.css";
 import PostEditor from "../../components/PostEditor";
 
 import { useState } from "react";
-import { Post } from "../types/post";
+import { Post } from "../types/types";
 import { Sidebar } from "../../components/Sidebar";
 
 export default function CreatePost() {

@@ -3,21 +3,22 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import PostBox from "../../components/postBox";
 import Button from "../../components/button";
 import { Sidebar } from "../../components/Sidebar";
-import { Post } from "../types/post";
 import { Menu, X } from "lucide-react";
-import { categories } from "../types/post";
-import { Tag } from "../types/post";
+import { Post, categories, Tag } from "../types/types";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const [category, setCategory] = useState("All");
   const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = useState(
     searchParams.get("category") || "All"
   );
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("All");
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -109,11 +110,6 @@ export default function Dashboard() {
     // close side bar
     setShowSidebar(false);
   };
-
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState("All");
-  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
     async function fetchTags() {
@@ -212,9 +208,6 @@ export default function Dashboard() {
         </div>
         <h1 className="text-3xl font-bold text-gray-800  mb-6">Dashboard</h1>
         <div>Welcome back!</div>
-        <div className="flex justify-between items-center mb-6">
-          <Button text="Create Post" onClick={handleCreate} />
-        </div>
 
         {/* Error Message */}
         {error && (
@@ -229,9 +222,14 @@ export default function Dashboard() {
         ) : (
           <div>
             <div className="flex flex-col gap-2">
-              <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-                Posts: {category}
-              </h2>
+              <div className="flex flex-row justify-between">
+                <h2 className="text-2xl font-semibold text-gray-700">
+                  Posts: {category}
+                </h2>
+                <div className="flex justify-between items-center ">
+                  <Button text="Create Post" onClick={handleCreate} />
+                </div>
+              </div>
               <div>
                 <span className="mr-2">Status:</span>
                 <select
@@ -247,7 +245,7 @@ export default function Dashboard() {
 
               {/* Available tags from database */}
               <div className="mt-2">
-                <label className="text-sm">Available Tags:</label>
+                <label className="text-sm">Available Tags</label>
                 {isLoading ? (
                   <div className="text-sm text-gray-500">Loading tags...</div>
                 ) : (
@@ -258,8 +256,7 @@ export default function Dashboard() {
                           key={tagObj._id}
                           onClick={() => handleSelectTag(tagObj.tag)}
                           disabled={selectedTags.includes(tagObj.tag)}
-                          className="bg-blue-100 text-blue-800 px-2 py-1 
-                          rounded-md flex items-center"
+                          className="px-2 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-medium"
                           title="add tag"
                         >
                           {tagObj.tag}
@@ -272,19 +269,19 @@ export default function Dashboard() {
 
               {/* Selected tags */}
               <div className="mt-2 mb-10">
-                <label className="text-sm">Selected Tags:</label>
+                <label className="text-sm">Selected Tags</label>
                 <div className="flex flex-wrap gap-2">
                   {selectedTags.map((tag, index) => (
                     <div
                       key={index}
-                      className="bg-blue-100 text-blue-800 px-2 py-1 
-                      rounded-md flex items-center
-                      text-sm"
+                      className="px-2 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-medium
+                      hover:scale-110 transition-transform "
                     >
                       <span>{tag}</span>
                       <button
                         onClick={() => removeTag(tag)}
-                        // className="ml-2 text-blue-500 hover:text-blue-700"
+                        className="hover:cursor-pointer"
+                        title="Remove select tag"
                       >
                         ×
                       </button>

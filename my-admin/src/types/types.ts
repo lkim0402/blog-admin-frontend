@@ -11,7 +11,7 @@ export interface Post {
   status: string;
 }
 
-export const categories = ["All", "Workshop", "Journal"];
+export const categories = ["All", "Workshop", "Journal", "Book"];
 
 export type Tag = {
   _id: string;

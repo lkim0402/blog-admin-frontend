@@ -1,4 +1,4 @@
-import { Post } from "../src/types/post";
+import { Post } from "../src/types/types";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Link from "@tiptap/extension-link";

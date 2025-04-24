@@ -11,10 +11,11 @@ import { TagsInput } from "./TagsInput";
 import Button from "./button";
 import { all, createLowlight } from "lowlight";
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import { Post } from "../src/types/post";
+import { Post } from "../src/types/types";
 const lowlight = createLowlight(all);
 
 import { ArrowLeftFromLine } from "lucide-react";
+import { categories } from "../src/types/types";
 
 // Cloudinary widget type definition
 declare global {
@@ -202,8 +203,10 @@ export default function PostEditor({
               onChange={(e) => setPost({ ...post, category: e.target.value })}
               className="w-50 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option>Workshop</option>
-              <option>Journal</option>
+              {categories.map((el) => (
+                <option>{el}</option>
+              ))}
+              {/* <option>Journal</option> */}
             </select>
           </div>
           <div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Post } from "../src/types/post";
-import { Tag } from "../src/types/post";
+import { Post } from "../src/types/types";
+import { Tag } from "../src/types/types";
 
 interface TagsInputProps {
   post: Post;
