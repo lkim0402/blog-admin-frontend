@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Post } from "../src/types/post";
 import React from "react";
+import clsx from "clsx";
 
 /*
  * Accepts all the normal Post properties PLUS a function called
@@ -16,6 +17,7 @@ export default function PostBox({
   date,
   updated_date,
   tags, //obj of tags
+  status,
   onDelete,
 }: Post & { onDelete: (id: string, title: string) => void }) {
   const navigate = useNavigate();
@@ -45,17 +47,25 @@ export default function PostBox({
     >
       {/* description */}
       <section>
-        <span
-          className={`px-2 py-1 rounded-full font-sm ${
-            category == "Journal"
-              ? "bg-blue-900 text-blue-200"
-              : category == "Workshop"
-              ? "bg-amber-500 text-amber-50"
-              : "bg-gray-600 text-gray-300"
-          } `}
-        >
-          {category}
-        </span>
+        <div className="flex justify-between gap-2">
+          <span
+            className={clsx(`px-2 py-1 rounded-full text-xs font-medium`, {
+              "bg-blue-900 text-blue-200": category == "Journal",
+              "bg-amber-500 text-amber-50": category == "Workshop",
+            })}
+          >
+            {category}
+          </span>
+          <span
+            className={clsx("px-2 py-1 rounded-full text-xs font-medium", {
+              "bg-green-600 text-green-50": status === "Published",
+              "bg-gray-400 text-gray-100": status === "Draft",
+            })}
+          >
+            {status}
+          </span>
+        </div>
+
         <p className=" font-bold my-2 text-[1rem]">{title}</p>
         <div className="flex flex-row gap-2 my-2">
           {tags?.map((tagObj) => {

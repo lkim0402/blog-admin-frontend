@@ -8,7 +8,10 @@ export interface Post {
   cover_image?: string;
   updated_date?: string;
   tags?: Tag[];
+  status: string;
 }
+
+export const categories = ["All", "Workshop", "Journal"];
 
 type Tag = {
   _id: string;

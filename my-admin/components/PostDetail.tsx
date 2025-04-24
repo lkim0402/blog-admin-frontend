@@ -16,6 +16,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import { Sidebar } from "./Sidebar";
 import { ArrowLeftFromLine } from "lucide-react";
 // import React from "react";
+import { clsx } from "clsx";
 
 // import React from "react";
 
@@ -33,6 +34,7 @@ export default function PostDetail() {
     date: new Date().toISOString(),
     updated_date: "",
     tags: [],
+    status: "",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -89,6 +91,7 @@ export default function PostDetail() {
         updated_date: data.updated_date || "",
         cover_image: data.cover_image || "",
         tags: data.tags || [],
+        status: data.status || "",
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -168,6 +171,7 @@ export default function PostDetail() {
             updated_date: new Date().toISOString(),
             cover_image: post.cover_image,
             tags: post.tags,
+            status: post.status,
           }),
         }
       );
@@ -233,13 +237,22 @@ export default function PostDetail() {
                   <div className="flex flex-wrap items-center gap-4">
                     {/* Category with badge style */}
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium  ${
-                        post.category == "Journal"
-                          ? "bg-blue-900 text-blue-200"
-                          : post.category == "Workshop"
-                          ? "bg-amber-500 text-amber-50"
-                          : "bg-gray-600 text-gray-300"
-                      } `}
+                      // className={`px-2 py-1 rounded-full text-xs font-medium  ${
+                      //   post.category == "Journal"
+                      //     ? "bg-blue-900 text-blue-200"
+                      //     : post.category == "Workshop"
+                      //     ? "bg-amber-500 text-amber-50"
+                      //     : "bg-gray-600 text-gray-300"
+                      // } `}
+                      className={clsx(
+                        `px-2 py-1 rounded-full text-xs font-medium`,
+                        {
+                          "bg-blue-900 text-blue-200":
+                            post.category == "Journal",
+                          "bg-amber-500 text-amber-50":
+                            post.category == "Workshop",
+                        }
+                      )}
                     >
                       {post.category}
                     </span>
@@ -259,7 +272,7 @@ export default function PostDetail() {
                           d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
                         />
                       </svg>
-                      Post #{id}
+                      Post status: {post.status}
                     </span>
 
                     {/* Created date */}

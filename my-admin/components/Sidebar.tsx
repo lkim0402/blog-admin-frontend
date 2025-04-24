@@ -16,7 +16,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="space-y-2 pl-4 text-white text-xl ">
         {categories.map((el) => {
           return (
-            <div>
+            <div key={el}>
               <button
                 onClick={() => onClick(el)}
                 className={`transition-transform 

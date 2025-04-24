@@ -5,6 +5,7 @@ import Button from "../../components/button";
 import { Sidebar } from "../../components/Sidebar";
 import { Post } from "../types/post";
 import { Menu, X } from "lucide-react";
+import { categories } from "../types/post";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function Dashboard() {
     };
   }, []);
 
-  const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
+  // const categories = ["All", "Workshop", "Journal"];
 
   function handleCreate() {
     navigate("/create");
@@ -103,6 +104,9 @@ export default function Dashboard() {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("category", cat);
     setSearchParams(newSearchParams);
+
+    // close side bar
+    setShowSidebar(false);
   };
 
   const [showSidebar, setShowSidebar] = useState(false);
@@ -145,7 +149,7 @@ export default function Dashboard() {
           </div>
           {categories.map((el) => {
             return (
-              <div>
+              <div key={el}>
                 <button
                   onClick={() => handleCategoryChange(el)}
                   className={`transition-transform text-white
@@ -173,6 +177,7 @@ export default function Dashboard() {
           </button>
         </div>
         <h1 className="text-3xl font-bold text-gray-800  mb-6">Dashboard</h1>
+        <div>Welcome back!</div>
         <div className="flex justify-between items-center mb-6">
           <Button text="Create Post" onClick={handleCreate} />
         </div>
