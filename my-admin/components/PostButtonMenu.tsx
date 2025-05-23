@@ -15,6 +15,12 @@ import {
   AlignJustify,
   AlignCenter,
   AlignRight,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6,
 } from "lucide-react";
 import { useCallback } from "react";
 
@@ -171,6 +177,44 @@ export default function PostButtonMenu({ editor }: PostButtonMenuProps) {
         title="Add link"
       >
         <Link size={16} />
+      </button>
+
+      {/* h1-h6 */}
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        className={iconButtonStyle(editor.isActive("heading", { level: 1 }))}
+      >
+        <Heading1 size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        className={iconButtonStyle(editor.isActive("heading", { level: 2 }))}
+      >
+        <Heading2 size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        className={iconButtonStyle(editor.isActive("heading", { level: 3 }))}
+      >
+        <Heading3 size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+        className={iconButtonStyle(editor.isActive("heading", { level: 4 }))}
+      >
+        <Heading4 size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
+        className={iconButtonStyle(editor.isActive("heading", { level: 5 }))}
+      >
+        <Heading5 size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
+        className={iconButtonStyle(editor.isActive("heading", { level: 6 }))}
+      >
+        <Heading6 size={16} />
       </button>
     </div>
   );
