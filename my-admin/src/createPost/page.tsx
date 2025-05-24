@@ -69,6 +69,7 @@ export default function CreatePost() {
   }
   // const categories = ["All", "Workshop", "Journal", "Draft", "Published"];
 
+// test
   function handleClick(cat: string) {
     if (window.confirm("Do you want to exit the post without saving?")) {
       navigate(`/dashboard?category=${encodeURIComponent(cat)}`);
