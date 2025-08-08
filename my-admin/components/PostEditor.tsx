@@ -3,6 +3,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import Youtube from "@tiptap/extension-youtube";
 import ImageResize from "tiptap-extension-resize-image";
 import TextAlign from "@tiptap/extension-text-align";
 
@@ -57,6 +58,7 @@ export default function PostEditor({
   const [showRaw, setShowRaw] = useState(false);
   const cloudinaryWidgetRef = useRef<CloudinaryWidget | null>(null);
 
+  // =========================== editor settings ===========================
   const editor = useEditor({
     content: post.body || "",
     extensions: [
@@ -72,10 +74,15 @@ export default function PostEditor({
       }),
       ImageResize,
       TextAlign.configure({
-        types: ["heading", "paragraph"],
+        types: ["heading", "paragraph", "youtube"],
       }),
       CodeBlockLowlight.configure({
         lowlight,
+      }),
+      Youtube.configure({
+        nocookie: true, // Recommended for privacy
+        width: 640,
+        height: 480,
       }),
     ],
     editorProps: {
@@ -91,7 +98,19 @@ export default function PostEditor({
     },
   });
 
-  // Simple image insertion via URL prompt
+  // adding youtube vid
+  const addYoutubeVideo = useCallback(() => {
+    const url = window.prompt("Enter YouTube URL");
+
+    if (url && editor) {
+      // Use the command from the new extension
+      editor.commands.setYoutubeVideo({
+        src: url,
+      });
+    }
+  }, [editor]);
+
+  // adding image
   const addImageByUrl = useCallback(() => {
     const url = window.prompt("Enter image URL");
 
@@ -99,6 +118,8 @@ export default function PostEditor({
       editor.chain().focus().setImage({ src: url }).run();
     }
   }, [editor]);
+
+  // ==================================================================
 
   // Initialize Cloudinary widget
   useEffect(() => {
@@ -154,6 +175,8 @@ export default function PostEditor({
   if (!editor) {
     return null;
   }
+
+  // ==================================================================
 
   return (
     <div>
@@ -247,6 +270,12 @@ export default function PostEditor({
               className="px-2 py-1 border whitespace-nowrap items-center border-gray-300 rounded-md hover:bg-gray-100 transition"
             >
               Image from URL
+            </button>
+            <button
+              onClick={addYoutubeVideo}
+              className="px-2 py-1 border whitespace-nowrap items-center border-gray-300 rounded-md hover:bg-gray-100 transition"
+            >
+              Add YouTube Video
             </button>
           </div>
         </section>
