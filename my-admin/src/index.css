@@ -58,25 +58,9 @@ img {
   }
 }
 
-.ProseMirror div[data-youtube-video] {
-  /* --- Centering Styles --- */
+div[data-youtube-video] {
   display: flex;
   justify-content: center;
-
-  /* --- New - For Click Handling --- */
-  position: relative; /* This is crucial for the overlay */
-}
-
-/* This creates the invisible "shield" on top of the video */
-.ProseMirror div[data-youtube-video]::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent; /* Makes it invisible */
-  cursor: pointer; /* Shows a pointer on hover so you know you can click it */
 }
 
 .ProseMirror a {

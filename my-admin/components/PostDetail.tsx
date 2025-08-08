@@ -13,6 +13,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
+import Youtube from "@tiptap/extension-youtube";
 import { Sidebar } from "./Sidebar";
 import { ArrowLeftFromLine } from "lucide-react";
 // import React from "react";
@@ -54,11 +55,16 @@ export default function PostDetail() {
         types: ["heading", "paragraph"],
       }),
       Image.configure({
-        inline: false,
+        inline: true,
         allowBase64: true,
       }),
       CodeBlockLowlight.configure({
         lowlight,
+      }),
+      Youtube.configure({
+        nocookie: true, // Recommended for privacy
+        width: 640,
+        height: 480,
       }),
     ],
     editorProps: {
